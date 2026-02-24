@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { Executive, Relationship, RelType } from "@/lib/types";
 import { REGION_COLOR, REL_COLOR, REL_LABEL } from "@/lib/types";
+import { getAnonymousUserId, checkIsKnown, setKnown, submitReport as dbSubmitReport } from "@/lib/db";
 
 interface Props {
   exec: Executive | null;
@@ -11,36 +12,6 @@ interface Props {
   onSelectNode: (exec: Executive) => void;
   onClose: () => void;
   onCompanyClick?: (companyName: string) => void;
-}
-
-// ── localStorage 工具 ────────────────────────────────────
-const LS_KNOWN  = "g_known_execs";   // Set<string>  "id|name|company"
-const LS_ERRORS = "g_error_reports"; // ErrorReport[]
-
-interface ErrorReport {
-  execId: number;
-  name: string;
-  company: string;
-  field: string;
-  desc: string;
-  ts: string;
-}
-
-function getKnownSet(): Set<string> {
-  try { return new Set(JSON.parse(localStorage.getItem(LS_KNOWN) || "[]")); }
-  catch { return new Set(); }
-}
-function saveKnownSet(s: Set<string>) {
-  localStorage.setItem(LS_KNOWN, JSON.stringify(Array.from(s)));
-}
-function getReports(): ErrorReport[] {
-  try { return JSON.parse(localStorage.getItem(LS_ERRORS) || "[]"); }
-  catch { return []; }
-}
-function saveReport(r: ErrorReport) {
-  const list = getReports();
-  list.unshift(r);
-  localStorage.setItem(LS_ERRORS, JSON.stringify(list));
 }
 
 export default function Sidebar({ exec, allLinks, allExecs, onSelectNode, onClose, onCompanyClick }: Props) {
@@ -52,37 +23,35 @@ export default function Sidebar({ exec, allLinks, allExecs, onSelectNode, onClos
   const [reportDone, setReportDone]         = useState(false);
   const reportRef = useRef<HTMLTextAreaElement>(null);
 
-  // 每次切换人物时同步 isKnown 状态
+  // 每次切换人物时从 Supabase 查询 isKnown
   useEffect(() => {
     if (!exec) return;
-    const key = `${exec.id}|${exec.name}|${exec.company}`;
-    setIsKnown(getKnownSet().has(key));
     setShowReport(false);
     setReportDesc("");
     setReportDone(false);
+    setIsKnown(false);
+    const uid = getAnonymousUserId();
+    checkIsKnown(uid, exec.id).then(setIsKnown);
   }, [exec?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!exec) return null;
 
-  // 我认识TA 切换
+  // 我认识TA 切换（乐观更新 + 后台写 Supabase）
   function toggleKnown() {
-    const key = `${exec!.id}|${exec!.name}|${exec!.company}`;
-    const s = getKnownSet();
-    if (s.has(key)) { s.delete(key); setIsKnown(false); }
-    else            { s.add(key);    setIsKnown(true);  }
-    saveKnownSet(s);
+    const next = !isKnown;
+    setIsKnown(next);
+    const uid = getAnonymousUserId();
+    setKnown(uid, exec!.id, next);
   }
 
-  // 提交报错
-  function submitReport() {
+  // 提交报错 → Supabase
+  async function submitReport() {
     if (!reportDesc.trim()) return;
-    saveReport({
-      execId:  exec!.id,
-      name:    exec!.name,
-      company: exec!.company,
-      field:   reportField,
-      desc:    reportDesc.trim(),
-      ts:      new Date().toISOString(),
+    await dbSubmitReport({
+      execId:      exec!.id,
+      execName:    exec!.name,
+      field:       reportField,
+      description: reportDesc.trim(),
     });
     setReportDone(true);
     setReportDesc("");

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import type { Executive, Relationship, Region, RelType, RoleCategory, CompanyType, Company } from "@/lib/types";
 import { ROLE_CATEGORY_KEYWORDS, COMPANY_TYPE_KEYWORDS } from "@/lib/types";
+import { fetchExecutives, fetchRelationships, fetchCompanies } from "@/lib/db";
 import Sidebar from "@/components/Sidebar";
 import FilterPanel from "@/components/FilterPanel";
 import CompanyModal from "@/components/CompanyModal";
@@ -17,13 +18,6 @@ const ForceGraph = dynamic(() => import("@/components/ForceGraph"), {
   ),
 });
 
-interface RawRelationship {
-  source: number;
-  target: number;
-  type: RelType;
-  strength: number;
-  label: string;
-}
 
 export default function HomePage() {
   const [executives, setExecutives] = useState<Executive[]>([]);
@@ -41,17 +35,17 @@ export default function HomePage() {
   const [companyModalTarget, setCompanyModalTarget] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false); // mobile filter drawer
 
-  // load data
+  // load data from Supabase
   useEffect(() => {
     Promise.all([
-      fetch("/data/executives.json").then((r) => r.json()),
-      fetch("/data/relationships.json").then((r) => r.json()),
-      fetch("/data/companies.json").then((r) => r.json()).catch(() => []),
+      fetchExecutives(),
+      fetchRelationships(),
+      fetchCompanies(),
     ])
-      .then(([execs, rels, comps]: [Executive[], RawRelationship[], Company[]]) => {
+      .then(([execs, rels, comps]) => {
         setExecutives(execs);
-        setRelationships(rels as unknown as Relationship[]);
-        setCompanies(comps ?? []);
+        setRelationships(rels);
+        setCompanies(comps);
         setLoading(false);
       })
       .catch((e) => {
