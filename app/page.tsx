@@ -39,6 +39,7 @@ export default function HomePage() {
   const [filterCompanyType, setFilterCompanyType] = useState<CompanyType>("ALL");
   const [searchName, setSearchName] = useState("");
   const [companyModalTarget, setCompanyModalTarget] = useState<string | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false); // mobile filter drawer
 
   // load data
   useEffect(() => {
@@ -90,6 +91,7 @@ export default function HomePage() {
 
   const handleSelectNode = useCallback((exec: Executive) => {
     setSelectedExec(exec);
+    setFilterOpen(false); // close filter drawer when selecting a node on mobile
   }, []);
 
   const handleClose = useCallback(() => {
@@ -122,37 +124,68 @@ export default function HomePage() {
     );
   }
 
+  const filterPanel = (
+    <FilterPanel
+      searchName={searchName}
+      filterRegion={filterRegion}
+      filterRelType={filterRelType}
+      filterRoleCategory={filterRoleCategory}
+      filterCompanyType={filterCompanyType}
+      onSearch={setSearchName}
+      onRegion={setFilterRegion}
+      onRelType={setFilterRelType}
+      onRoleCategory={setFilterRoleCategory}
+      onCompanyType={setFilterCompanyType}
+      nodeCount={graphData.nodes.length}
+      linkCount={graphData.links.length}
+    />
+  );
+
   return (
     <div className="flex flex-col h-screen bg-slate-900 text-slate-100 overflow-hidden">
       {/* top bar */}
-      <header className="flex items-center px-4 py-2.5 bg-slate-800 border-b border-slate-700 flex-shrink-0">
+      <header className="flex items-center px-4 py-2.5 bg-slate-800 border-b border-slate-700 flex-shrink-0 gap-3">
         <h1 className="font-bold text-sm sm:text-base text-white whitespace-nowrap">
           保险高管关系图谱
         </h1>
-        <span className="ml-3 text-xs text-slate-500 hidden sm:inline">
+        <span className="text-xs text-slate-500 hidden sm:inline">
           {executives.length} 名高管 · {relationships.length} 条关系
         </span>
+
+        {/* mobile filter toggle */}
+        <button
+          className="ml-auto sm:hidden flex items-center gap-1.5 text-xs text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+          onClick={() => setFilterOpen((v) => !v)}
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M7 8h10M11 12h2" />
+          </svg>
+          筛选
+        </button>
       </header>
 
-      {/* filter panel */}
-      <FilterPanel
-        searchName={searchName}
-        filterRegion={filterRegion}
-        filterRelType={filterRelType}
-        filterRoleCategory={filterRoleCategory}
-        filterCompanyType={filterCompanyType}
-        onSearch={setSearchName}
-        onRegion={setFilterRegion}
-        onRelType={setFilterRelType}
-        onRoleCategory={setFilterRoleCategory}
-        onCompanyType={setFilterCompanyType}
-        nodeCount={graphData.nodes.length}
-        linkCount={graphData.links.length}
-      />
-
-      {/* main content */}
+      {/* body: left panel + graph + right sidebar */}
       <div className="flex flex-1 overflow-hidden relative">
-        {/* graph — always full area */}
+
+        {/* ── Left filter panel (desktop: always visible) ── */}
+        <div className="hidden sm:flex h-full">
+          {filterPanel}
+        </div>
+
+        {/* ── Mobile filter overlay ── */}
+        {filterOpen && (
+          <>
+            <div
+              className="fixed inset-0 bg-black/50 z-30 sm:hidden"
+              onClick={() => setFilterOpen(false)}
+            />
+            <div className="fixed top-[44px] left-0 bottom-0 z-40 sm:hidden flex">
+              {filterPanel}
+            </div>
+          </>
+        )}
+
+        {/* ── Graph ── */}
         <div className="flex-1 overflow-hidden">
           <ForceGraph
             data={graphData}
@@ -164,7 +197,7 @@ export default function HomePage() {
           />
         </div>
 
-        {/* sidebar — on mobile: fixed full-screen overlay; on desktop: side panel */}
+        {/* ── Right sidebar ── */}
         {selectedExec && (
           <>
             {/* mobile backdrop */}
@@ -173,8 +206,8 @@ export default function HomePage() {
               onClick={handleClose}
             />
             <div className="
-              fixed inset-x-0 bottom-0 top-16 z-40
-              sm:static sm:inset-auto sm:z-auto
+              fixed inset-x-0 bottom-0 z-40 h-[75vh]
+              sm:static sm:inset-auto sm:z-auto sm:h-auto
               w-full sm:w-80 flex-shrink-0 overflow-hidden
             ">
               <Sidebar
