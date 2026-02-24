@@ -1,101 +1,204 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import { useState, useEffect, useMemo, useCallback } from "react";
+import dynamic from "next/dynamic";
+import type { Executive, Relationship, Region, RelType, RoleCategory, CompanyType, Company } from "@/lib/types";
+import { ROLE_CATEGORY_KEYWORDS, COMPANY_TYPE_KEYWORDS } from "@/lib/types";
+import Sidebar from "@/components/Sidebar";
+import FilterPanel from "@/components/FilterPanel";
+import CompanyModal from "@/components/CompanyModal";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+const ForceGraph = dynamic(() => import("@/components/ForceGraph"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center w-full h-full bg-slate-900">
+      <div className="text-slate-400 text-sm animate-pulse">加载图谱中…</div>
+    </div>
+  ),
+});
+
+interface RawRelationship {
+  source: number;
+  target: number;
+  type: RelType;
+  strength: number;
+  label: string;
+}
+
+export default function HomePage() {
+  const [executives, setExecutives] = useState<Executive[]>([]);
+  const [relationships, setRelationships] = useState<Relationship[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [selectedExec, setSelectedExec] = useState<Executive | null>(null);
+  const [filterRegion, setFilterRegion] = useState<Region | "ALL">("ALL");
+  const [filterRelType, setFilterRelType] = useState<RelType | "ALL">("ALL");
+  const [filterRoleCategory, setFilterRoleCategory] = useState<RoleCategory>("ALL");
+  const [filterCompanyType, setFilterCompanyType] = useState<CompanyType>("ALL");
+  const [searchName, setSearchName] = useState("");
+  const [companyModalTarget, setCompanyModalTarget] = useState<string | null>(null);
+
+  // load data
+  useEffect(() => {
+    Promise.all([
+      fetch("/data/executives.json").then((r) => r.json()),
+      fetch("/data/relationships.json").then((r) => r.json()),
+      fetch("/data/companies.json").then((r) => r.json()).catch(() => []),
+    ])
+      .then(([execs, rels, comps]: [Executive[], RawRelationship[], Company[]]) => {
+        setExecutives(execs);
+        setRelationships(rels as unknown as Relationship[]);
+        setCompanies(comps ?? []);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setError(String(e));
+        setLoading(false);
+      });
+  }, []);
+
+  // filtered graph data (memoized)
+  const graphData = useMemo(() => {
+    const searchLower = searchName.toLowerCase();
+    const roleKeywords = ROLE_CATEGORY_KEYWORDS[filterRoleCategory];
+    const companyKeywords = COMPANY_TYPE_KEYWORDS[filterCompanyType];
+    const nodes = executives.filter((n) => {
+      if (filterRegion !== "ALL" && n.region !== filterRegion) return false;
+      if (companyKeywords.length > 0 && !companyKeywords.some((kw) => n.company.includes(kw))) return false;
+      if (roleKeywords.length > 0 && !roleKeywords.some((kw) => n.title.includes(kw))) return false;
+      if (
+        searchLower &&
+        !n.name.toLowerCase().includes(searchLower) &&
+        !n.company.toLowerCase().includes(searchLower) &&
+        !n.extracted.schools.some((s) => s.toLowerCase().includes(searchLower))
+      )
+        return false;
+      return true;
+    });
+    const nodeIds = new Set(nodes.map((n) => n.id));
+    const links = relationships.filter((l) => {
+      const sid = typeof l.source === "object" ? (l.source as Executive).id : (l.source as number);
+      const tid = typeof l.target === "object" ? (l.target as Executive).id : (l.target as number);
+      if (!nodeIds.has(sid) || !nodeIds.has(tid)) return false;
+      if (filterRelType !== "ALL" && l.type !== filterRelType) return false;
+      return true;
+    });
+    return { nodes, links };
+  }, [executives, relationships, filterRegion, filterRelType, filterRoleCategory, filterCompanyType, searchName]);
+
+  const handleSelectNode = useCallback((exec: Executive) => {
+    setSelectedExec(exec);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setSelectedExec(null);
+  }, []);
+
+  const handleCompanyClick = useCallback((companyName: string) => {
+    setCompanyModalTarget(companyName);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-slate-900 text-slate-300">
+        <div className="text-center">
+          <div className="text-2xl mb-2 animate-spin">⟳</div>
+          <div>加载数据中…</div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-slate-900 text-red-400">
+        <div className="text-center">
+          <div className="text-xl mb-2">加载失败</div>
+          <div className="text-sm text-slate-500">{error}</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-screen bg-slate-900 text-slate-100 overflow-hidden">
+      {/* top bar */}
+      <header className="flex items-center px-4 py-2.5 bg-slate-800 border-b border-slate-700 flex-shrink-0">
+        <h1 className="font-bold text-base mr-4 text-white whitespace-nowrap">
+          保险高管关系图谱
+        </h1>
+        <span className="text-xs text-slate-500">
+          {executives.length} 名高管 · {relationships.length} 条关系
+        </span>
+        {/* Legend */}
+        <div className="ml-auto flex items-center gap-4 text-xs text-slate-400">
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" /> 中国大陆
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" /> 中国香港
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block" /> 新加坡
+          </span>
+        </div>
+      </header>
+
+      {/* filter panel */}
+      <FilterPanel
+        searchName={searchName}
+        filterRegion={filterRegion}
+        filterRelType={filterRelType}
+        filterRoleCategory={filterRoleCategory}
+        filterCompanyType={filterCompanyType}
+        onSearch={setSearchName}
+        onRegion={setFilterRegion}
+        onRelType={setFilterRelType}
+        onRoleCategory={setFilterRoleCategory}
+        onCompanyType={setFilterCompanyType}
+        nodeCount={graphData.nodes.length}
+        linkCount={graphData.links.length}
+      />
+
+      {/* main content */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* graph */}
+        <div className={`flex-1 overflow-hidden transition-all ${selectedExec ? "mr-0" : ""}`}>
+          <ForceGraph
+            data={graphData}
+            selectedId={selectedExec?.id ?? null}
+            onSelectNode={handleSelectNode}
+            filterRegion={filterRegion}
+            filterRelType={filterRelType}
+            searchName={searchName}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+
+        {/* sidebar */}
+        {selectedExec && (
+          <div className="w-80 flex-shrink-0 overflow-hidden">
+            <Sidebar
+              exec={selectedExec}
+              allLinks={relationships}
+              allExecs={executives}
+              onSelectNode={handleSelectNode}
+              onClose={handleClose}
+              onCompanyClick={handleCompanyClick}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* company modal */}
+      <CompanyModal
+        companyName={companyModalTarget}
+        companies={companies}
+        executives={executives}
+        onClose={() => setCompanyModalTarget(null)}
+        onSelectExec={handleSelectNode}
+      />
     </div>
   );
 }

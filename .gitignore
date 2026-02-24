@@ -34,3 +34,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scripts: intermediate / large data files (not needed for deployment)
+scripts/bio_atoms.json
+scripts/career_path_overrides.json
+scripts/bio_discovery_report.json
+scripts/unmatched_institutions_report.txt
+
+# backup files
+public/data/*.bak
