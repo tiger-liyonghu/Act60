@@ -127,7 +127,7 @@ export const ROLE_CATEGORY_LABEL: Record<RoleCategory, string> = {
   ALL:        "全部职位",
   board:      "董事会",
   exec:       "高管",
-  chief:      "首席官",
+  chief:      "C-suite",
   actuary:    "精算师",
   supervisor: "监事会",
 };

@@ -126,24 +126,12 @@ export default function HomePage() {
     <div className="flex flex-col h-screen bg-slate-900 text-slate-100 overflow-hidden">
       {/* top bar */}
       <header className="flex items-center px-4 py-2.5 bg-slate-800 border-b border-slate-700 flex-shrink-0">
-        <h1 className="font-bold text-base mr-4 text-white whitespace-nowrap">
+        <h1 className="font-bold text-sm sm:text-base text-white whitespace-nowrap">
           保险高管关系图谱
         </h1>
-        <span className="text-xs text-slate-500">
+        <span className="ml-3 text-xs text-slate-500 hidden sm:inline">
           {executives.length} 名高管 · {relationships.length} 条关系
         </span>
-        {/* Legend */}
-        <div className="ml-auto flex items-center gap-4 text-xs text-slate-400">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" /> 中国大陆
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" /> 中国香港
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block" /> 新加坡
-          </span>
-        </div>
       </header>
 
       {/* filter panel */}
@@ -163,9 +151,9 @@ export default function HomePage() {
       />
 
       {/* main content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* graph */}
-        <div className={`flex-1 overflow-hidden transition-all ${selectedExec ? "mr-0" : ""}`}>
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* graph — always full area */}
+        <div className="flex-1 overflow-hidden">
           <ForceGraph
             data={graphData}
             selectedId={selectedExec?.id ?? null}
@@ -176,18 +164,29 @@ export default function HomePage() {
           />
         </div>
 
-        {/* sidebar */}
+        {/* sidebar — on mobile: fixed full-screen overlay; on desktop: side panel */}
         {selectedExec && (
-          <div className="w-80 flex-shrink-0 overflow-hidden">
-            <Sidebar
-              exec={selectedExec}
-              allLinks={relationships}
-              allExecs={executives}
-              onSelectNode={handleSelectNode}
-              onClose={handleClose}
-              onCompanyClick={handleCompanyClick}
+          <>
+            {/* mobile backdrop */}
+            <div
+              className="fixed inset-0 bg-black/50 z-30 sm:hidden"
+              onClick={handleClose}
             />
-          </div>
+            <div className="
+              fixed inset-x-0 bottom-0 top-16 z-40
+              sm:static sm:inset-auto sm:z-auto
+              w-full sm:w-80 flex-shrink-0 overflow-hidden
+            ">
+              <Sidebar
+                exec={selectedExec}
+                allLinks={relationships}
+                allExecs={executives}
+                onSelectNode={handleSelectNode}
+                onClose={handleClose}
+                onCompanyClick={handleCompanyClick}
+              />
+            </div>
+          </>
         )}
       </div>
 

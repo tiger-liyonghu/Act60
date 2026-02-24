@@ -45,7 +45,6 @@ const ROLE_CATS: Array<{ value: RoleCategory; label: string }> = [
   { value: "exec", label: ROLE_CATEGORY_LABEL.exec },
   { value: "chief", label: ROLE_CATEGORY_LABEL.chief },
   { value: "actuary", label: ROLE_CATEGORY_LABEL.actuary },
-  { value: "supervisor", label: ROLE_CATEGORY_LABEL.supervisor },
 ];
 
 export default function FilterPanel({
@@ -64,10 +63,9 @@ export default function FilterPanel({
 }: Props) {
   return (
     <div className="flex flex-col bg-slate-800 border-b border-slate-700">
-      {/* row 1: search + region + rel type + stats */}
-      <div className="flex items-center gap-3 px-4 py-2 flex-wrap">
-        {/* search */}
-        <div className="flex items-center bg-slate-700 rounded-lg px-3 gap-2 min-w-[180px]">
+      {/* row 1: search + stats */}
+      <div className="flex items-center gap-2 px-3 py-2">
+        <div className="flex items-center bg-slate-700 rounded-lg px-3 gap-2 flex-1 min-w-0">
           <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -79,17 +77,23 @@ export default function FilterPanel({
             className="bg-transparent text-sm text-slate-100 placeholder-slate-500 outline-none py-1.5 w-full"
           />
           {searchName && (
-            <button onClick={() => onSearch("")} className="text-slate-500 hover:text-white text-xs">✕</button>
+            <button onClick={() => onSearch("")} className="text-slate-500 hover:text-white text-xs flex-shrink-0">✕</button>
           )}
         </div>
+        <div className="text-xs text-slate-500 whitespace-nowrap flex-shrink-0">
+          {nodeCount}人·{linkCount}条
+        </div>
+      </div>
 
-        {/* region */}
-        <div className="flex gap-1">
+      {/* row 2: region + rel type (scrollable on mobile) */}
+      <div className="overflow-x-auto scrollbar-none border-t border-slate-700/50">
+        <div className="flex items-center gap-1 px-3 py-1.5 min-w-max">
+          {/* region */}
           {REGIONS.map(({ value, label }) => (
             <button
               key={value}
               onClick={() => onRegion(value)}
-              className={`text-xs px-3 py-1.5 rounded-lg transition-colors font-medium ${
+              className={`text-xs px-2.5 py-1 rounded-lg transition-colors font-medium whitespace-nowrap ${
                 filterRegion === value
                   ? "text-white bg-slate-600"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
@@ -97,25 +101,22 @@ export default function FilterPanel({
             >
               {value !== "ALL" && (
                 <span
-                  className="inline-block w-2 h-2 rounded-full mr-1"
+                  className="inline-block w-1.5 h-1.5 rounded-full mr-1"
                   style={{ background: REGION_COLOR[value as Region] }}
                 />
               )}
               {label}
             </button>
           ))}
-        </div>
 
-        {/* separator */}
-        <div className="w-px h-5 bg-slate-600" />
+          <div className="w-px h-4 bg-slate-600 mx-1 flex-shrink-0" />
 
-        {/* rel type */}
-        <div className="flex gap-1">
+          {/* rel type */}
           {REL_TYPES.map(({ value, label }) => (
             <button
               key={value}
               onClick={() => onRelType(value)}
-              className={`text-xs px-3 py-1.5 rounded-lg transition-colors font-medium ${
+              className={`text-xs px-2.5 py-1 rounded-lg transition-colors font-medium whitespace-nowrap ${
                 filterRelType === value
                   ? "text-white bg-slate-600"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
@@ -123,7 +124,7 @@ export default function FilterPanel({
             >
               {value !== "ALL" && (
                 <span
-                  className="inline-block w-2 h-2 rounded-full mr-1"
+                  className="inline-block w-1.5 h-1.5 rounded-full mr-1"
                   style={{ background: REL_COLOR[value as RelType] }}
                 />
               )}
@@ -131,23 +132,17 @@ export default function FilterPanel({
             </button>
           ))}
         </div>
-
-        {/* stats */}
-        <div className="ml-auto text-xs text-slate-500 whitespace-nowrap">
-          {nodeCount} 人 · {linkCount} 关系
-        </div>
       </div>
 
-      {/* row 2: company type + role category */}
-      <div className="flex items-center gap-3 px-4 py-1.5 border-t border-slate-700/50 flex-wrap">
-        {/* company type */}
-        <div className="flex items-center gap-1">
-          <span className="text-xs text-slate-500 mr-1 flex-shrink-0">险种：</span>
+      {/* row 3: company type + role category (scrollable on mobile) */}
+      <div className="overflow-x-auto scrollbar-none border-t border-slate-700/50">
+        <div className="flex items-center gap-1 px-3 py-1.5 min-w-max">
+          <span className="text-xs text-slate-500 mr-0.5 flex-shrink-0">险种：</span>
           {COMPANY_TYPES.map(({ value, label }) => (
             <button
               key={value}
               onClick={() => onCompanyType(value)}
-              className={`text-xs px-3 py-1 rounded-lg transition-colors font-medium ${
+              className={`text-xs px-2.5 py-1 rounded-lg transition-colors font-medium whitespace-nowrap ${
                 filterCompanyType === value
                   ? "text-white bg-teal-700"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
@@ -156,18 +151,15 @@ export default function FilterPanel({
               {label}
             </button>
           ))}
-        </div>
 
-        <div className="w-px h-4 bg-slate-600" />
+          <div className="w-px h-4 bg-slate-600 mx-1 flex-shrink-0" />
 
-        {/* role category */}
-        <div className="flex items-center gap-1">
-          <span className="text-xs text-slate-500 mr-1 flex-shrink-0">职位：</span>
+          <span className="text-xs text-slate-500 mr-0.5 flex-shrink-0">职位：</span>
           {ROLE_CATS.map(({ value, label }) => (
             <button
               key={value}
               onClick={() => onRoleCategory(value)}
-              className={`text-xs px-3 py-1 rounded-lg transition-colors font-medium ${
+              className={`text-xs px-2.5 py-1 rounded-lg transition-colors font-medium whitespace-nowrap ${
                 filterRoleCategory === value
                   ? "text-white bg-indigo-600"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
