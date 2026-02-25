@@ -45,7 +45,7 @@ export default function IntermediatePage() {
       <hr />
       <h2>包含的功能:</h2>
       <ul>
-        <li>"use client"指令</li>
+        <li>&quot;use client&quot;指令</li>
         <li>useState状态管理</li>
         <li>useEffect副作用</li>
         <li>条件渲染</li>
