@@ -10,8 +10,8 @@ export default function VersionCheckPage() {
       <h2>验证步骤:</h2>
       <ol>
         <li>访问 <a href="/">主页面</a> 检查标题是否更新</li>
-        <li>检查搜索栏占位符是否为"姓名/公司/学校"</li>
-        <li>检查筛选器标签是否更新为"公司类型"</li>
+        <li>检查搜索栏占位符是否为&quot;姓名/公司/学校&quot;</li>
+        <li>检查筛选器标签是否更新为&quot;公司类型&quot;</li>
         <li>检查职位筛选是否只有3个选项</li>
       </ol>
       <hr />
