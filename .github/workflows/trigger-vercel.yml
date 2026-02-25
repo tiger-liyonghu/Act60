@@ -1,0 +1,38 @@
+name: Trigger Vercel Deployment
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  trigger-vercel:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Notify Vercel Deployment
+      run: |
+        echo "✅ 本地构建成功"
+        echo "📦 项目已构建，等待Vercel自动部署..."
+        echo "🔗 生产环境: https://graph.actuaryhelp.com/"
+        echo "🕐 时间: $(date)"
+        
+    - name: Check deployment status
+      run: |
+        echo "检查部署状态..."
+        sleep 30
+        curl -s -I https://graph.actuaryhelp.com/ | grep -i "age\|vercel-cache" || echo "无法访问网站"
