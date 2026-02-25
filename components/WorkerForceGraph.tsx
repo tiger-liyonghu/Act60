@@ -96,10 +96,10 @@ export default function WorkerForceGraph({
         ...sampled.sampledNodes,
         ...sampled.aggregatedNodes.map(agg => ({
           ...agg,
-          extracted: { schools: [], degrees: [], companies: [] },
+          extracted: { schools: [], former_companies: [], regulator_bg: [] },
           website: '',
           bio: '',
-          identity: ''
+          identity: { birth_year: null, gender: null }
         } as Executive))
       ];
 
@@ -408,7 +408,7 @@ export default function WorkerForceGraph({
   }, [processedData, selectedId, workerManager, workerStatus]);
 
   // 设置交互效果
-  const setupInteractions = useCallback((
+  const setupInteractions = useCallback(async (
     nodeSel: d3.Selection<SVGCircleElement, Executive, SVGGElement, unknown>,
     links: any[],
     nodes: Executive[],

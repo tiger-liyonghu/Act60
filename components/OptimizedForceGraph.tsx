@@ -79,10 +79,10 @@ export default function OptimizedForceGraph({
         ...sampled.sampledNodes,
         ...sampled.aggregatedNodes.map(agg => ({
           ...agg,
-          extracted: { schools: [], degrees: [], companies: [] },
+          extracted: { schools: [], former_companies: [], regulator_bg: [] },
           website: '',
           bio: '',
-          identity: ''
+          identity: { birth_year: null, gender: null }
         } as Executive))
       ];
 
