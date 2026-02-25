@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import type { Executive, Relationship as Rel } from "@/lib/types";
 
 // 简化版的ForceGraph组件
 const SimpleGraph = dynamic(() => import("@/components/SimpleForceGraph"), {
@@ -9,39 +10,51 @@ const SimpleGraph = dynamic(() => import("@/components/SimpleForceGraph"), {
   loading: () => <div>加载图谱中...</div>,
 });
 
-// 简化类型
-type Executive = {
-  id: number;
-  name: string;
-  title: string;
-  company: string;
-  region: string;
-};
+// 使用完整类型但简化数据
+const mockExecutives: Executive[] = [
+  {
+    id: 1,
+    name: "测试高管1",
+    title: "董事长",
+    company: "测试保险公司",
+    region: "CN",
+    website: "",
+    bio: "",
+    extracted: { schools: [], former_companies: [], regulator_bg: [] }
+  },
+  {
+    id: 2,
+    name: "测试高管2",
+    title: "总经理",
+    company: "测试保险公司",
+    region: "CN",
+    website: "",
+    bio: "",
+    extracted: { schools: [], former_companies: [], regulator_bg: [] }
+  },
+  {
+    id: 3,
+    name: "测试高管3",
+    title: "精算师",
+    company: "测试再保险公司",
+    region: "CN",
+    website: "",
+    bio: "",
+    extracted: { schools: [], former_companies: [], regulator_bg: [] }
+  },
+];
 
-type Relationship = {
-  source: number;
-  target: number;
-  type: string;
-};
+const mockRelationships: Rel[] = [
+  { source: 1, target: 2, type: "colleague", strength: 1, label: "同事关系" },
+  { source: 2, target: 3, type: "colleague", strength: 1, label: "同事关系" },
+];
 
 export default function NewHomePage() {
   const [executives, setExecutives] = useState<Executive[]>([]);
-  const [relationships, setRelationships] = useState<Relationship[]>([]);
+  const [relationships, setRelationships] = useState<Rel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 模拟数据
-    const mockExecutives: Executive[] = [
-      { id: 1, name: "测试高管1", title: "董事长", company: "测试保险公司", region: "北京" },
-      { id: 2, name: "测试高管2", title: "总经理", company: "测试保险公司", region: "上海" },
-      { id: 3, name: "测试高管3", title: "精算师", company: "测试再保险公司", region: "深圳" },
-    ];
-
-    const mockRelationships: Relationship[] = [
-      { source: 1, target: 2, type: "同事" },
-      { source: 2, target: 3, type: "合作" },
-    ];
-
     setTimeout(() => {
       setExecutives(mockExecutives);
       setRelationships(mockRelationships);
