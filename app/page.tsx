@@ -164,7 +164,7 @@ export default function HomePage() {
       {/* top bar */}
       <header className="flex items-center px-4 py-2.5 bg-slate-800 border-b border-slate-700 flex-shrink-0 gap-3">
         <h1 className="font-bold text-sm sm:text-base text-white whitespace-nowrap">
-          保险公司高管信息图谱 v2
+          保险公司高管信息图谱 - 双语版本已部署
         </h1>
         
         {/* statistics */}
