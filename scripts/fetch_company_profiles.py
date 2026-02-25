@@ -16,9 +16,8 @@ import requests
 from openai import OpenAI
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
-SOURCE_FILE = os.path.join(SCRIPT_DIR, "..", "..", "Actuary60", "00_全部数据.json")
+EXECS_FILE  = os.path.join(SCRIPT_DIR, "..", "public", "data", "executives.json")
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "..", "public", "data", "companies.json")
-REGION_MAP  = {"中国大陆": "CN", "中国香港": "HK", "新加坡": "SG"}
 
 MAX_WORKERS     = 3      # 并发数（Jina 有速率限制，不宜过高）
 SAVE_EVERY      = 10
@@ -130,8 +129,19 @@ def main():
     def make_client():
         return OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
-    with open(SOURCE_FILE, encoding="utf-8") as f:
-        raw = json.load(f)
+    # 从 executives.json 提取唯一公司列表
+    with open(EXECS_FILE, encoding="utf-8") as f:
+        execs = json.load(f)
+    seen: dict[str, dict] = {}
+    for e in execs:
+        name = e.get("company", "")
+        if name and name not in seen:
+            seen[name] = {
+                "name": name,
+                "website": e.get("website", ""),
+                "region": e.get("region", "CN"),
+            }
+    raw = list(seen.values())
     print(f"加载: {len(raw)} 家公司")
 
     # 断点续跑
@@ -143,9 +153,7 @@ def main():
         print(f"已有记录: {len(existing)} 家（将跳过）")
 
     pending = [
-        {"name": c["name"], "website": c.get("website", ""),
-         "region": REGION_MAP.get(c.get("region", "中国大陆"), "CN")}
-        for c in raw if c["name"] not in existing
+        c for c in raw if c["name"] not in existing
     ]
     print(f"待处理: {len(pending)} 家\n")
 
