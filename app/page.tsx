@@ -17,7 +17,7 @@ const OptimizedForceGraph = dynamic(() => import("@/components/OptimizedForceGra
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center w-full h-full bg-slate-900">
-      <div className="text-slate-400 text-sm animate-pulse">加载图谱中… (部署版本: 2026-02-25 13:15)</div>
+      <div className="text-slate-400 text-sm animate-pulse">加载图谱中… (部署版本: 2026-02-25 13:52)</div>
     </div>
   ),
 });
@@ -381,6 +381,11 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      {/* 构建时间戳 */}
+      <div className="absolute bottom-1 left-1 text-[10px] text-slate-600 opacity-70">
+        构建时间: 2026-02-25 13:52 GMT+7
+      </div>
     </div>
   );
 }
