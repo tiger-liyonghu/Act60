@@ -5,7 +5,6 @@ import type { Executive, Relationship, GraphData, Region, RelType } from "@/lib/
 import { REGION_COLOR, REL_COLOR } from "@/lib/types";
 import { sampleNodesByDegree, PerformanceMonitor, debounce } from "@/lib/performance";
 import { getWorkerManager, type WorkerNode, type WorkerLink } from "@/lib/worker-manager";
-import * as d3 from "d3";
 
 interface Props {
   data: GraphData;
@@ -97,15 +96,10 @@ export default function WorkerForceGraph({
         ...sampled.sampledNodes,
         ...sampled.aggregatedNodes.map(agg => ({
           ...agg,
-          extracted: { schools: [], former_companies: [], regulator_bg: [] },
+          extracted: { schools: [], degrees: [], companies: [] },
           website: '',
           bio: '',
-          identity: { birth_year: null, gender: null },
-          career_path: [],
-          education: [],
-          qualifications: [],
-          board_roles: [],
-          industry_roles: []
+          identity: ''
         } as Executive))
       ];
 
@@ -414,7 +408,7 @@ export default function WorkerForceGraph({
   }, [processedData, selectedId, workerManager, workerStatus]);
 
   // 设置交互效果
-  const setupInteractions = useCallback(async (
+  const setupInteractions = useCallback((
     nodeSel: d3.Selection<SVGCircleElement, Executive, SVGGElement, unknown>,
     links: any[],
     nodes: Executive[],
@@ -467,7 +461,7 @@ export default function WorkerForceGraph({
     let cleanup: (() => void) | undefined;
     
     const redraw = debounce(() => {
-      draw().then(() => { /* 绘制完成 */ });
+      draw().then((fn) => { cleanup = fn; });
     }, 100);
 
     redraw();

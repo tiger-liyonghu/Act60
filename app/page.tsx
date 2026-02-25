@@ -13,6 +13,17 @@ import PerformancePanel from "@/components/PerformancePanel";
 import LoadingProgress from "@/components/LoadingProgress";
 import WorkerForceGraph from "@/components/WorkerForceGraph";
 
+const OptimizedForceGraph = dynamic(() => import("@/components/OptimizedForceGraph"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center w-full h-full bg-slate-900">
+      <div className="text-slate-400 text-sm animate-pulse">加载图谱中…</div>
+    </div>
+  ),
+});
+
+
+export default function HomePage() {
   const [executives, setExecutives] = useState<Executive[]>([]);
   const [relationships, setRelationships] = useState<Relationship[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);

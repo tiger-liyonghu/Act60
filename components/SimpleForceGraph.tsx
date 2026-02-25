@@ -4,7 +4,6 @@ import { useEffect, useRef, useCallback, useState, useMemo } from "react";
 import type { Executive, Relationship, GraphData, Region, RelType } from "@/lib/types";
 import { REGION_COLOR, REL_COLOR } from "@/lib/types";
 import { sampleNodesByDegree, PerformanceMonitor, debounce } from "@/lib/performance";
-import * as d3 from "d3";
 
 interface Props {
   data: GraphData;
@@ -79,15 +78,10 @@ export default function SimpleForceGraph({
         ...sampled.sampledNodes,
         ...sampled.aggregatedNodes.map(agg => ({
           ...agg,
-          extracted: { schools: [], former_companies: [], regulator_bg: [] },
+          extracted: { schools: [], degrees: [], companies: [] },
           website: '',
           bio: '',
-          identity: { birth_year: null, gender: null },
-          career_path: [],
-          education: [],
-          qualifications: [],
-          board_roles: [],
-          industry_roles: []
+          identity: ''
         } as Executive))
       ];
 
@@ -294,20 +288,20 @@ export default function SimpleForceGraph({
           n.id === hovered.id || neighborIds.has(n.id) ? 1 : 0.15
         );
         
-        d3.selectAll(".links line").attr("stroke-opacity", (l: any) => {
+        (d3 as any).selectAll(".links line").attr("stroke-opacity", (l: any) => {
           const sid = typeof l.source === "object" ? l.source.id : l.source;
           const tid = typeof l.target === "object" ? l.target.id : l.target;
           return sid === hovered.id || tid === hovered.id ? 0.9 : 0.05;
         });
         
-        d3.selectAll(".labels text").attr("opacity", (n: any) =>
+        (d3 as any).selectAll(".labels text").attr("opacity", (n: any) =>
           n.id === hovered.id || neighborIds.has(n.id) ? 1 : 0
         );
       })
       .on("mouseout", () => {
         nodeSel.attr("opacity", 1);
-        d3.selectAll(".links line").attr("stroke-opacity", 0.5);
-        d3.selectAll(".labels text").attr("opacity", (n: any) => {
+        (d3 as any).selectAll(".links line").attr("stroke-opacity", 0.5);
+        (d3 as any).selectAll(".labels text").attr("opacity", (n: any) => {
           const deg = degree.get(n.id) || 0;
           return n.id < 0 ? 1 : (deg >= 5 ? 0.8 : 0);
         });

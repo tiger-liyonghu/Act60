@@ -155,7 +155,7 @@ export class ForceGraphWorkerManager {
    */
   on<T extends WorkerMessage['type']>(
     type: T,
-    handler: (data: any) => void
+    handler: (data: Extract<WorkerMessage, { type: T }>['data']) => void
   ): void {
     if (!this.messageHandlers.has(type)) {
       this.messageHandlers.set(type, []);
@@ -168,7 +168,7 @@ export class ForceGraphWorkerManager {
    */
   once<T extends WorkerMessage['type']>(
     type: T,
-    handler: (data: any) => void
+    handler: (data: Extract<WorkerMessage, { type: T }>['data']) => void
   ): void {
     const onceHandler = (data: any) => {
       handler(data);
@@ -182,7 +182,7 @@ export class ForceGraphWorkerManager {
    */
   off<T extends WorkerMessage['type']>(
     type: T,
-    handler: (data: any) => void
+    handler: (data: Extract<WorkerMessage, { type: T }>['data']) => void
   ): void {
     const handlers = this.messageHandlers.get(type);
     if (handlers) {

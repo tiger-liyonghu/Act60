@@ -1,6 +1,6 @@
 export type Region = "CN" | "HK" | "SG";
 export type RelType = "colleague" | "alumni" | "former" | "regulator" | "successor";
-export type RoleCategory = "ALL" | "board" | "management" | "actuary";
+export type RoleCategory = "ALL" | "board" | "exec" | "chief" | "actuary" | "supervisor";
 export type CompanyType = "ALL" | "nonlife" | "life";
 
 export interface CareerStep {
@@ -100,9 +100,12 @@ export const REL_LABEL: Record<RelType, string> = {
 
 export const ROLE_CATEGORY_KEYWORDS: Record<RoleCategory, string[]> = {
   ALL: [],
-  board:      ["董事", "chair", "board", "监事", "独立董事", "董事长", "执行董事", "非执行董事", "董事总经理", "副董事长", "独立非执行董事", "监事长", "副监事长"],
-  management: ["总裁", "总经理", "副总裁", "副总经理", "联席总裁", "联席总经理", "总监", "经理", "主管", "负责人", "首席执行官", "首席财务官", "首席风险官", "首席投资官", "首席信息官", "首席运营官", "首席合规官", "首席分销官", "首席财务总监", "首席技术官"],
-  actuary:    ["精算", "actuary", "精算师", "总精算师", "首席精算师", "集团精算师", "精算总监"],
+  board:      ["董事长", "执行董事", "独立董事", "非执行董事", "董事总经理", "副董事长", "独立非执行董事"],
+  exec:       ["总裁", "总经理", "副总裁", "副总经理", "联席总裁", "联席总经理"],
+  chief:      ["首席执行官", "首席财务官", "首席风险官", "首席投资官", "首席信息官",
+               "首席运营官", "首席合规官", "首席分销官", "首席财务总监", "首席技术官"],
+  actuary:    ["总精算师", "首席精算师", "集团精算师", "精算师", "精算总监", "精算"],
+  supervisor: ["监事长", "副监事长", "监事"],
 };
 
 export const COMPANY_TYPE_KEYWORDS: Record<CompanyType, string[]> = {
@@ -116,13 +119,15 @@ export const COMPANY_TYPE_KEYWORDS: Record<CompanyType, string[]> = {
 
 export const COMPANY_TYPE_LABEL: Record<CompanyType, string> = {
   ALL:     "所有公司",
-  nonlife: "非寿险公司",
-  life:    "寿险公司",
+  nonlife: "财险",
+  life:    "寿险健康险",
 };
 
 export const ROLE_CATEGORY_LABEL: Record<RoleCategory, string> = {
   ALL:        "全部职位",
   board:      "董事会",
-  management: "管理层",
+  exec:       "高管",
+  chief:      "C-suite",
   actuary:    "精算师",
+  supervisor: "监事会",
 };

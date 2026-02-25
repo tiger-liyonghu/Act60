@@ -2,7 +2,6 @@
 
 import type { Region, RelType, RoleCategory, CompanyType } from "@/lib/types";
 import { REL_COLOR, REGION_COLOR, ROLE_CATEGORY_LABEL, COMPANY_TYPE_LABEL } from "@/lib/types";
-import { useLanguage } from "@/lib/i18n-simple";
 
 interface Props {
   searchName: string;
@@ -43,7 +42,8 @@ const COMPANY_TYPES: Array<{ value: CompanyType; label: string }> = [
 const ROLE_CATS: Array<{ value: RoleCategory; label: string }> = [
   { value: "ALL", label: ROLE_CATEGORY_LABEL.ALL },
   { value: "board", label: ROLE_CATEGORY_LABEL.board },
-  { value: "management", label: ROLE_CATEGORY_LABEL.management },
+  { value: "exec", label: ROLE_CATEGORY_LABEL.exec },
+  { value: "chief", label: ROLE_CATEGORY_LABEL.chief },
   { value: "actuary", label: ROLE_CATEGORY_LABEL.actuary },
 ];
 
@@ -69,8 +69,6 @@ export default function FilterPanel({
   nodeCount,
   linkCount,
 }: Props) {
-  const { t } = useLanguage();
-  
   return (
     <div className="flex flex-col h-full bg-slate-800 border-r border-slate-700 w-44 flex-shrink-0 overflow-y-auto">
       <div className="flex flex-col gap-0 p-3 flex-1">
@@ -84,7 +82,7 @@ export default function FilterPanel({
             type="text"
             value={searchName}
             onChange={(e) => onSearch(e.target.value)}
-            placeholder="姓名/公司/学校"
+            placeholder="搜索…"
             className="bg-transparent text-xs text-slate-100 placeholder-slate-500 outline-none py-1.5 w-full"
           />
           {searchName && (
@@ -93,7 +91,7 @@ export default function FilterPanel({
         </div>
 
         {/* Region */}
-        <SectionLabel>{t.filters.region}</SectionLabel>
+        <SectionLabel>地区</SectionLabel>
         <div className="flex flex-col gap-0.5">
           {REGIONS.map(({ value, label }) => (
             <button
@@ -119,7 +117,7 @@ export default function FilterPanel({
         </div>
 
         {/* Rel type */}
-        <SectionLabel>{t.filters.relationship}</SectionLabel>
+        <SectionLabel>关系类型</SectionLabel>
         <div className="flex flex-col gap-0.5">
           {REL_TYPES.map(({ value, label }) => (
             <button
@@ -145,7 +143,7 @@ export default function FilterPanel({
         </div>
 
         {/* Company type */}
-        <SectionLabel>{t.filters.companyType}</SectionLabel>
+        <SectionLabel>险种</SectionLabel>
         <div className="flex flex-col gap-0.5">
           {COMPANY_TYPES.map(({ value, label }) => (
             <button
@@ -163,7 +161,7 @@ export default function FilterPanel({
         </div>
 
         {/* Role category */}
-        <SectionLabel>{t.filters.position}</SectionLabel>
+        <SectionLabel>职位</SectionLabel>
         <div className="flex flex-col gap-0.5">
           {ROLE_CATS.map(({ value, label }) => (
             <button
@@ -184,7 +182,7 @@ export default function FilterPanel({
 
       {/* Stats */}
       <div className="px-3 py-2 border-t border-slate-700 text-[11px] text-slate-500 flex-shrink-0">
-        {nodeCount} {t.stats.executives} · {linkCount} {t.stats.relationships}
+        {nodeCount} 人 · {linkCount} 条关系
       </div>
     </div>
   );
