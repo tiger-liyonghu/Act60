@@ -79,10 +79,15 @@ export default function OptimizedForceGraph({
         ...sampled.sampledNodes,
         ...sampled.aggregatedNodes.map(agg => ({
           ...agg,
-          extracted: { schools: [], degrees: [], companies: [] },
+          extracted: { schools: [], former_companies: [], regulator_bg: [] },
           website: '',
           bio: '',
-          identity: ''
+          identity: { birth_year: null, gender: null },
+          career_path: [],
+          education: [],
+          qualifications: [],
+          board_roles: [],
+          industry_roles: []
         } as Executive))
       ];
 
@@ -195,17 +200,18 @@ export default function OptimizedForceGraph({
               const source = simulationNodes.find(n => n.id === (link.source as number));
               const target = simulationNodes.find(n => n.id === (link.target as number));
               const isAggregated = (source?.id || 0) < 0 || (target?.id || 0) < 0;
-              return isAggregated ? 150 : 80;
+              // 增加节点间距离，避免数据一团
+              return isAggregated ? 200 : 120;
             })
             .strength((l: d3.SimulationLinkDatum<d3.SimulationNodeDatum>) =>
               ((l as unknown as Relationship).strength || 0.5) * 0.3
             )
         )
-        .force("charge", d3.forceManyBody().strength(-120))
+        .force("charge", d3.forceManyBody().strength(-200)) // 增加排斥力，让节点更分散
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius((d) => nodeRadius(d as Executive) + 2))
-        .alphaDecay(0.02) // 更快的衰减
-        .velocityDecay(0.4);
+        .force("collision", d3.forceCollide().radius((d) => nodeRadius(d as Executive) + 5)) // 增加碰撞半径
+        .alphaDecay(0.01) // 更慢的衰减，让布局更充分
+        .velocityDecay(0.3); // 更慢的速度衰减
 
       simulationRef.current = simulation;
 
