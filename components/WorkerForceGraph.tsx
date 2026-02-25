@@ -1,10 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState, useMemo } from "react";
+import * as d3 from "d3";
 import type { Executive, Relationship, GraphData, Region, RelType } from "@/lib/types";
 import { REGION_COLOR, REL_COLOR } from "@/lib/types";
 import { sampleNodesByDegree, PerformanceMonitor, debounce } from "@/lib/performance";
 import { getWorkerManager, type WorkerNode, type WorkerLink } from "@/lib/worker-manager";
+
+// D3节点类型
+interface D3Node extends d3.SimulationNodeDatum {
+  id: number;
+  name: string;
+  company: string;
+  title: string;
+  region: string;
+  color: string;
+  radius: number;
+  isAggregated?: boolean;
+}
+
+// D3连接类型
+interface D3Link extends d3.SimulationLinkDatum<D3Node> {
+  type: string;
+  strength: number;
+  label: string;
+}
 
 interface Props {
   data: GraphData;
@@ -104,11 +124,11 @@ export default function WorkerForceGraph({
       ];
 
       // 合并连接
-      const allLinks = [
+      const allLinks: D3Link[] = [
         ...sampled.sampledLinks.map(l => ({
           source: l.source,
           target: l.target,
-          type: (l as any).type || 'unknown',
+          type: (l as Relationship).type || 'unknown',
           strength: 0.5,
           label: ''
         })),
@@ -254,21 +274,21 @@ export default function WorkerForceGraph({
     const svg = d3.select(svgRef.current);
     
     // 更新节点位置
-    svg.selectAll(".node")
-      .attr("cx", (d: any) => d.x || 0)
-      .attr("cy", (d: any) => d.y || 0);
+    svg.selectAll<SVGCircleElement, D3Node>(".node")
+      .attr("cx", (d) => d.x || 0)
+      .attr("cy", (d) => d.y || 0);
 
     // 更新连接位置
-    svg.selectAll(".link")
-      .attr("x1", (d: any) => d.source.x || 0)
-      .attr("y1", (d: any) => d.source.y || 0)
-      .attr("x2", (d: any) => d.target.x || 0)
-      .attr("y2", (d: any) => d.target.y || 0);
+    svg.selectAll<SVGLineElement, D3Link>(".link")
+      .attr("x1", (d) => (d.source as D3Node).x || 0)
+      .attr("y1", (d) => (d.source as D3Node).y || 0)
+      .attr("x2", (d) => (d.target as D3Node).x || 0)
+      .attr("y2", (d) => (d.target as D3Node).y || 0);
 
     // 更新标签位置
-    svg.selectAll(".label")
-      .attr("x", (d: any) => (d.x || 0) + (d.id < 0 ? 20 : 10))
-      .attr("y", (d: any) => (d.y || 0) + 4);
+    svg.selectAll<SVGTextElement, D3Node>(".label")
+      .attr("x", (d) => (d.x || 0) + (d.id < 0 ? 20 : 10))
+      .attr("y", (d) => (d.y || 0) + 4);
   }, []);
 
   // 初始绘制
@@ -340,10 +360,10 @@ export default function WorkerForceGraph({
       g.append("g")
         .attr("class", "links")
         .selectAll("line")
-        .data(links)
+        .data(links as D3Link[])
         .join("line")
         .attr("class", "link")
-        .attr("stroke", (l) => REL_COLOR[(l as unknown as Relationship).type] || "#ccc")
+        .attr("stroke", (l) => REL_COLOR[(l.type as RelType)] || "#ccc")
         .attr("stroke-width", (l) => {
           const link = l as unknown as Relationship;
           const source = nodes.find(n => n.id === (link.source as number));
@@ -385,7 +405,7 @@ export default function WorkerForceGraph({
         });
 
       // 交互效果
-      setupInteractions(nodeSel, links, nodes, degree);
+      setupInteractions(nodeSel, links as D3Link[], nodes, degree);
 
       // 如果使用Worker，启动模拟
       if (workerManager && workerStatus.initialized && !workerStatus.active) {
@@ -410,7 +430,7 @@ export default function WorkerForceGraph({
   // 设置交互效果
   const setupInteractions = useCallback(async (
     nodeSel: d3.Selection<SVGCircleElement, Executive, SVGGElement, unknown>,
-    links: any[],
+    links: D3Link[],
     nodes: Executive[],
     degree: Map<number, number>
   ) => {
@@ -421,8 +441,8 @@ export default function WorkerForceGraph({
       .on("mouseover", (_event, hovered) => {
         const neighborIds = new Set<number>();
         links.forEach((l) => {
-          const sid = typeof l.source === "object" ? (l.source as Executive).id : (l.source as number);
-          const tid = typeof l.target === "object" ? (l.target as Executive).id : (l.target as number);
+          const sid = typeof l.source === "object" ? (l.source as D3Node).id : (l.source as number);
+          const tid = typeof l.target === "object" ? (l.target as D3Node).id : (l.target as number);
           if (sid === hovered.id) neighborIds.add(tid);
           if (tid === hovered.id) neighborIds.add(sid);
         });
@@ -431,20 +451,20 @@ export default function WorkerForceGraph({
           n.id === hovered.id || neighborIds.has(n.id) ? 1 : 0.15
         );
         
-        d3.selectAll(".link").attr("stroke-opacity", (l: any) => {
-          const sid = typeof l.source === "object" ? (l.source as Executive).id : (l.source as number);
-          const tid = typeof l.target === "object" ? (l.target as Executive).id : (l.target as number);
+        d3.selectAll<SVGLineElement, D3Link>(".link").attr("stroke-opacity", (l) => {
+          const sid = typeof l.source === "object" ? (l.source as D3Node).id : (l.source as number);
+          const tid = typeof l.target === "object" ? (l.target as D3Node).id : (l.target as number);
           return sid === hovered.id || tid === hovered.id ? 0.9 : 0.05;
         });
         
-        d3.selectAll(".label").attr("opacity", (n: any) =>
+        d3.selectAll<SVGTextElement, Executive>(".label").attr("opacity", (n) =>
           n.id === hovered.id || neighborIds.has(n.id) ? 1 : 0
         );
       })
       .on("mouseout", () => {
         nodeSel.attr("opacity", 1);
-        d3.selectAll(".link").attr("stroke-opacity", 0.5);
-        d3.selectAll(".label").attr("opacity", (n: any) => {
+        d3.selectAll<SVGLineElement, D3Link>(".link").attr("stroke-opacity", 0.5);
+        d3.selectAll<SVGTextElement, Executive>(".label").attr("opacity", (n) => {
           const deg = degree.get(n.id) || 0;
           return n.id < 0 ? 1 : (deg >= 5 ? 0.8 : 0);
         });
@@ -458,23 +478,27 @@ export default function WorkerForceGraph({
 
   // 防抖重绘
   useEffect(() => {
-    let cleanup: (() => void) | undefined;
+    let resizeTimeout: NodeJS.Timeout | null = null;
     
-    const redraw = debounce(() => {
-      draw().then((fn) => { cleanup = fn; });
-    }, 100);
-
+    const redraw = async () => {
+      await draw();
+    };
+    
+    // 立即执行一次
     redraw();
 
-    const handleResize = debounce(() => {
-      redraw();
-    }, 250);
+    const handleResize = () => {
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        redraw();
+      }, 250);
+    };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      cleanup?.();
+      if (resizeTimeout) clearTimeout(resizeTimeout);
     };
   }, [draw]);
 

@@ -28,7 +28,7 @@ export default function OptimizedForceGraph({
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const simulationRef = useRef<any>(null);
+  const simulationRef = useRef<d3.Simulation<d3.SimulationNodeDatum, d3.SimulationLinkDatum<d3.SimulationNodeDatum>> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [performanceStats, setPerformanceStats] = useState<{
     nodes: number;
@@ -91,7 +91,7 @@ export default function OptimizedForceGraph({
         ...sampled.sampledLinks.map(l => ({
           source: l.source,
           target: l.target,
-          type: (l as any).type || 'unknown',
+          type: (l as Relationship).type || 'unknown',
           strength: 0.5,
           label: ''
         })),
