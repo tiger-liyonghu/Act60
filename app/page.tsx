@@ -17,7 +17,7 @@ const OptimizedForceGraph = dynamic(() => import("@/components/OptimizedForceGra
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center w-full h-full bg-slate-900">
-      <div className="text-slate-400 text-sm animate-pulse">加载图谱中…</div>
+      <div className="text-slate-400 text-sm animate-pulse">加载图谱中… (部署版本: 2026-02-25 13:15)</div>
     </div>
   ),
 });
