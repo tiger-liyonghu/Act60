@@ -43,3 +43,11 @@ scripts/unmatched_institutions_report.txt
 
 # backup files
 public/data/*.bak
+
+# pipeline raw downloads
+scripts/raw/
+scripts/pipeline/__pycache__/
+
+# python
+__pycache__/
+*.pyc
