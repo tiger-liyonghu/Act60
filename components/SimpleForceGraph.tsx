@@ -1,355 +1,221 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState, useMemo } from "react";
-import * as d3 from "d3";
-import type { Executive, Relationship, GraphData, Region, RelType } from "@/lib/types";
-import { REGION_COLOR, REL_COLOR } from "@/lib/types";
-import { sampleNodesByDegree, PerformanceMonitor, debounce } from "@/lib/performance";
+import { useEffect, useRef } from "react";
 
-interface Props {
-  data: GraphData;
-  selectedId: number | null;
-  onSelectNode: (exec: Executive) => void;
-  filterRegion: Region | "ALL";
-  filterRelType: RelType | "ALL";
-  searchName: string;
-  enableSampling?: boolean;
-  degreeThreshold?: number;
+interface Node {
+  id: string;
+  name: string;
+  type: "company" | "executive";
+  size: number;
+  color: string;
 }
 
-export default function SimpleForceGraph({
-  data,
-  selectedId,
-  onSelectNode,
-  filterRegion,
-  filterRelType,
-  searchName,
-  enableSampling = true,
-  degreeThreshold = 5,
-}: Props) {
-  const svgRef = useRef<SVGSVGElement>(null);
+interface Link {
+  source: string;
+  target: string;
+  type: string;
+}
+
+interface GraphData {
+  nodes: Node[];
+  links: Link[];
+}
+
+interface Props {
+  data?: GraphData;
+}
+
+export default function SimpleForceGraph({ data }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [performanceStats, setPerformanceStats] = useState<{
-    nodes: number;
-    links: number;
-    renderTime?: number;
-  }>({ nodes: 0, links: 0 });
+  const svgRef = useRef<SVGSVGElement>(null);
 
-  // 性能监控
-  const perfMonitor = PerformanceMonitor.getInstance();
+  // 默认数据
+  const defaultData: GraphData = {
+    nodes: [
+      { id: "1", name: "中国人寿", type: "company", size: 40, color: "#3b82f6" },
+      { id: "2", name: "中国平安", type: "company", size: 45, color: "#3b82f6" },
+      { id: "3", name: "太平洋保险", type: "company", size: 35, color: "#3b82f6" },
+      { id: "4", name: "张三", type: "executive", size: 20, color: "#10b981" },
+      { id: "5", name: "李四", type: "executive", size: 20, color: "#10b981" },
+      { id: "6", name: "王五", type: "executive", size: 20, color: "#10b981" },
+    ],
+    links: [
+      { source: "1", target: "4", type: "employment" },
+      { source: "1", target: "5", type: "employment" },
+      { source: "2", target: "5", type: "employment" },
+      { source: "2", target: "6", type: "employment" },
+      { source: "3", target: "4", type: "employment" },
+      { source: "3", target: "6", type: "employment" },
+    ],
+  };
 
-  // 数据预处理和采样
-  const processedData = useMemo(() => {
-    const stopTimer = perfMonitor.start("data_processing");
-    
-    // 基础过滤
-    const searchLower = searchName.toLowerCase();
-    const filteredNodes = data.nodes.filter((n) => {
-      if (filterRegion !== "ALL" && n.region !== filterRegion) return false;
-      if (searchLower && !n.name.toLowerCase().includes(searchLower) &&
-          !n.company.toLowerCase().includes(searchLower) &&
-          !n.extracted.schools.some((s) => s.toLowerCase().includes(searchLower))) return false;
-      return true;
-    });
+  const graphData = data || defaultData;
 
-    const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
-    const filteredLinks = data.links.filter((l) => {
-      const sid = typeof l.source === "object" ? l.source.id : (l.source as number);
-      const tid = typeof l.target === "object" ? l.target.id : (l.target as number);
-      if (!filteredNodeIds.has(sid) || !filteredNodeIds.has(tid)) return false;
-      if (filterRelType !== "ALL" && l.type !== filterRelType) return false;
-      return true;
-    });
+  useEffect(() => {
+    const drawGraph = async () => {
+      if (!containerRef.current || !svgRef.current) return;
 
-    // 如果启用采样，对数据进行聚合
-    if (enableSampling && filteredNodes.length > 100) {
-      const sampled = sampleNodesByDegree(
-        filteredNodes,
-        filteredLinks.map(l => ({
-          source: typeof l.source === "object" ? l.source.id : l.source,
-          target: typeof l.target === "object" ? l.target.id : l.target,
-          type: l.type
-        })),
-        degreeThreshold
-      );
-
-      // 合并采样节点和聚合节点
-      const allNodes = [
-        ...sampled.sampledNodes,
-        ...sampled.aggregatedNodes.map(agg => ({
-          ...agg,
-          extracted: { schools: [], former_companies: [], regulator_bg: [] },
-          website: '',
-          bio: '',
-          identity: { birth_year: null, gender: null }
-        } as Executive))
-      ];
-
-      // 合并连接
-      const allLinks = [
-        ...sampled.sampledLinks.map(l => ({
-          source: l.source,
-          target: l.target,
-          type: (l as any).type || 'unknown',
-          strength: 0.5,
-          label: ''
-        })),
-        ...sampled.aggregatedLinks.map(l => ({
-          source: l.source,
-          target: l.target,
-          type: l.type,
-          strength: Math.min(0.8, 0.3 + l.count * 0.05),
-          label: `${l.count}个连接`
-        }))
-      ];
-
-      stopTimer?.();
-      return { nodes: allNodes, links: allLinks };
-    }
-
-    stopTimer?.();
-    return { nodes: filteredNodes, links: filteredLinks };
-  }, [data, filterRegion, filterRelType, searchName, enableSampling, degreeThreshold]);
-
-  // 简化的绘图函数（不使用D3力导向图）
-  const draw = useCallback(async () => {
-    if (!svgRef.current || !containerRef.current) return;
-    
-    setIsLoading(true);
-    const renderTimer = perfMonitor.start("graph_render");
-
-    try {
+      // 动态导入 d3
       const d3 = await import("d3");
 
-      // 清理之前的图形
+      // 清除之前的图形
+      d3.select(svgRef.current).selectAll("*").remove();
+
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+
+      // 设置 SVG 尺寸
+      svgRef.current.setAttribute("width", width.toString());
+      svgRef.current.setAttribute("height", height.toString());
+
       const svg = d3.select(svgRef.current);
-      svg.selectAll("*").remove();
 
-      const width = containerRef.current.clientWidth || 800;
-      const height = containerRef.current.clientHeight || 600;
-      svgRef.current.setAttribute("width", String(width));
-      svgRef.current.setAttribute("height", String(height));
+      // 创建力导向模拟
+      const simulation = d3.forceSimulation(graphData.nodes as any)
+        .force("link", d3.forceLink(graphData.links)
+          .id((d: any) => d.id)
+          .distance(100))
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide().radius((d: any) => d.size + 5));
 
-      const { nodes, links } = processedData;
-
-      // 更新性能统计
-      setPerformanceStats({
-        nodes: nodes.length,
-        links: links.length,
-        renderTime: undefined
-      });
-
-      if (nodes.length === 0) {
-        svg.append("text")
-          .attr("x", width / 2)
-          .attr("y", height / 2)
-          .attr("text-anchor", "middle")
-          .attr("fill", "#94a3b8")
-          .text("没有找到匹配的数据");
-        setIsLoading(false);
-        return;
-      }
-
-      // 计算连接度
-      const degree = new Map<number, number>();
-      links.forEach((l) => {
-        const sid = typeof l.source === "object" ? l.source.id : (l.source as number);
-        const tid = typeof l.target === "object" ? l.target.id : (l.target as number);
-        degree.set(sid, (degree.get(sid) || 0) + 1);
-        degree.set(tid, (degree.get(tid) || 0) + 1);
-      });
-
-      const nodeRadius = (n: Executive) => {
-        const deg = degree.get(n.id) || 0;
-        if (n.id < 0) return Math.max(15, Math.min(30, 15 + deg * 0.3));
-        return Math.max(5, Math.min(20, 5 + deg * 0.6));
-      };
-
-      // 创建分组
-      const g = svg.append("g");
-
-      // 缩放
-      const zoom = d3.zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.1, 8])
-        .on("zoom", (event) => g.attr("transform", event.transform));
-      
-      svg.call(zoom);
-
-      // 简单布局：圆形排列
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const radius = Math.min(width, height) * 0.4;
-      
-      nodes.forEach((node, i) => {
-        const angle = (i * 2 * Math.PI) / nodes.length;
-        node.x = centerX + radius * Math.cos(angle);
-        node.y = centerY + radius * Math.sin(angle);
-      });
-
-      // 绘制连接
-      g.append("g")
-        .attr("class", "links")
+      // 创建连线
+      const link = svg.append("g")
         .selectAll("line")
-        .data(links)
-        .join("line")
-        .attr("stroke", (l: any) => REL_COLOR[l.type] || "#ccc")
-        .attr("stroke-width", (l: any) => {
-          const sourceId = typeof l.source === "object" ? l.source.id : l.source;
-          const targetId = typeof l.target === "object" ? l.target.id : l.target;
-          const isAggregated = sourceId < 0 || targetId < 0;
-          return isAggregated ? 2.5 : 1.5;
-        })
-        .attr("stroke-opacity", 0.5)
-        .attr("x1", (l: any) => {
-          const source = nodes.find(n => n.id === (typeof l.source === "object" ? l.source.id : l.source));
-          return source?.x || 0;
-        })
-        .attr("y1", (l: any) => {
-          const source = nodes.find(n => n.id === (typeof l.source === "object" ? l.source.id : l.source));
-          return source?.y || 0;
-        })
-        .attr("x2", (l: any) => {
-          const target = nodes.find(n => n.id === (typeof l.target === "object" ? l.target.id : l.target));
-          return target?.x || 0;
-        })
-        .attr("y2", (l: any) => {
-          const target = nodes.find(n => n.id === (typeof l.target === "object" ? l.target.id : l.target));
-          return target?.y || 0;
-        });
-
-      // 绘制节点
-      const nodeSel = g.append("g")
-        .attr("class", "nodes")
-        .selectAll("circle")
-        .data(nodes)
-        .join("circle")
-        .attr("r", nodeRadius)
-        .attr("fill", (n: Executive) => REGION_COLOR[n.region] || "#888")
-        .attr("stroke", (n: Executive) => (n.id === selectedId ? "#fff" : "transparent"))
+        .data(graphData.links)
+        .enter()
+        .append("line")
+        .attr("stroke", "#94a3b8")
         .attr("stroke-width", 2)
-        .attr("cx", (n: Executive) => n.x || 0)
-        .attr("cy", (n: Executive) => n.y || 0)
-        .style("cursor", "pointer");
+        .attr("stroke-opacity", 0.6);
 
-      // 绘制标签
-      g.append("g")
-        .attr("class", "labels")
+      // 创建节点
+      const node = svg.append("g")
+        .selectAll("circle")
+        .data(graphData.nodes)
+        .enter()
+        .append("circle")
+        .attr("r", (d: any) => d.size)
+        .attr("fill", (d: any) => d.color)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 2)
+        .call((d3.drag() as any)
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+
+      // 添加节点标签
+      const label = svg.append("g")
         .selectAll("text")
-        .data(nodes)
-        .join("text")
-        .text((n: Executive) => n.name)
-        .attr("font-size", (n: Executive) => n.id < 0 ? 11 : 10)
+        .data(graphData.nodes)
+        .enter()
+        .append("text")
+        .text((d: any) => d.name)
+        .attr("font-size", "12px")
         .attr("fill", "#e2e8f0")
-        .attr("pointer-events", "none")
-        .attr("opacity", (n: Executive) => {
-          const deg = degree.get(n.id) || 0;
-          return n.id < 0 ? 1 : (deg >= 5 ? 0.8 : 0);
-        })
-        .attr("x", (n: Executive) => (n.x || 0) + nodeRadius(n) + 2)
-        .attr("y", (n: Executive) => (n.y || 0) + 4);
+        .attr("text-anchor", "middle")
+        .attr("dy", (d: any) => -d.size - 5);
 
-      // 交互效果
-      setupInteractions(nodeSel, links, nodes, degree);
+      // 更新位置函数
+      function ticked() {
+        link
+          .attr("x1", (d: any) => d.source.x)
+          .attr("y1", (d: any) => d.source.y)
+          .attr("x2", (d: any) => d.target.x)
+          .attr("y2", (d: any) => d.target.y);
 
-    } finally {
-      setIsLoading(false);
-      renderTimer?.();
-      
-      // 更新渲染时间
-      const stats = perfMonitor.getStats("graph_render");
-      if (stats) {
-        setPerformanceStats(prev => ({
-          ...prev,
-          renderTime: Math.round(stats.avg)
-        }));
+        node
+          .attr("cx", (d: any) => d.x)
+          .attr("cy", (d: any) => d.y);
+
+        label
+          .attr("x", (d: any) => d.x)
+          .attr("y", (d: any) => d.y);
       }
-    }
-  }, [processedData, selectedId]);
 
-  // 设置交互效果
-  const setupInteractions = useCallback((
-    nodeSel: any,
-    links: any[],
-    nodes: Executive[],
-    degree: Map<number, number>
-  ) => {
-    // 悬停高亮
-    nodeSel
-      .on("mouseover", (_event: any, hovered: Executive) => {
-        const neighborIds = new Set<number>();
-        links.forEach((l: any) => {
-          const sid = typeof l.source === "object" ? l.source.id : l.source;
-          const tid = typeof l.target === "object" ? l.target.id : l.target;
-          if (sid === hovered.id) neighborIds.add(tid);
-          if (tid === hovered.id) neighborIds.add(sid);
-        });
-        
-        nodeSel.attr("opacity", (n: any) =>
-          n.id === hovered.id || neighborIds.has(n.id) ? 1 : 0.15
-        );
-        
-        d3.selectAll(".links line").attr("stroke-opacity", (l: any) => {
-          const sid = typeof l.source === "object" ? l.source.id : l.source;
-          const tid = typeof l.target === "object" ? l.target.id : l.target;
-          return sid === hovered.id || tid === hovered.id ? 0.9 : 0.05;
-        });
-        
-        d3.selectAll(".labels text").attr("opacity", (n: any) =>
-          n.id === hovered.id || neighborIds.has(n.id) ? 1 : 0
-        );
-      })
-      .on("mouseout", () => {
-        nodeSel.attr("opacity", 1);
-        d3.selectAll(".links line").attr("stroke-opacity", 0.5);
-        d3.selectAll(".labels text").attr("opacity", (n: any) => {
-          const deg = degree.get(n.id) || 0;
-          return n.id < 0 ? 1 : (deg >= 5 ? 0.8 : 0);
-        });
-      })
-      .on("click", (_event: any, n: Executive) => {
-        if (n.id >= 0) {
-          onSelectNode(n);
+      // 拖拽函数
+      function dragstarted(event: any, d: any) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+
+      function dragged(event: any, d: any) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+
+      function dragended(event: any, d: any) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+
+      // 监听模拟更新
+      simulation.on("tick", ticked);
+
+      // 响应窗口大小变化
+      const resizeObserver = new ResizeObserver(() => {
+        if (containerRef.current) {
+          const newWidth = containerRef.current.clientWidth;
+          const newHeight = containerRef.current.clientHeight;
+          svgRef.current?.setAttribute("width", newWidth.toString());
+          svgRef.current?.setAttribute("height", newHeight.toString());
+          simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));
+          simulation.alpha(0.3).restart();
         }
       });
-  }, [onSelectNode]);
 
-  // 防抖重绘
-  useEffect(() => {
-    const redraw = debounce(() => {
-      draw();
-    }, 100);
+      if (containerRef.current) {
+        resizeObserver.observe(containerRef.current);
+      }
 
-    redraw();
-
-    const handleResize = debounce(() => {
-      redraw();
-    }, 250);
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
+      return () => {
+        resizeObserver.disconnect();
+        simulation.stop();
+      };
     };
-  }, [draw]);
+
+    drawGraph();
+  }, [graphData]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-slate-900">
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-900/80 z-10">
-          <div className="text-slate-400 text-sm animate-pulse">渲染中…</div>
-        </div>
-      )}
-      
-      {/* 性能统计 */}
-      {performanceStats.renderTime && (
-        <div className="absolute bottom-2 right-2 bg-slate-800/80 text-xs text-slate-400 px-2 py-1 rounded">
-          {performanceStats.nodes}节点/{performanceStats.links}连接 · {performanceStats.renderTime}ms
-          {enableSampling && <span className="ml-1 text-amber-400">(已优化)</span>}
-        </div>
-      )}
-      
+    <div ref={containerRef} className="w-full h-full relative">
       <svg ref={svgRef} className="w-full h-full" />
+      
+      {/* 图例 */}
+      <div className="absolute bottom-4 left-4 bg-gray-900/80 backdrop-blur-sm rounded-lg p-4 border border-gray-800">
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+            <span className="text-sm text-gray-300">保险公司</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 rounded-full bg-green-500"></div>
+            <span className="text-sm text-gray-300">高管人员</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-gray-400"></div>
+            <span className="text-sm text-gray-300">任职关系</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 控制按钮 */}
+      <div className="absolute top-4 right-4 flex space-x-2">
+        <button 
+          className="px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded text-sm transition"
+          onClick={() => window.location.reload()}
+        >
+          重置视图
+        </button>
+        <button 
+          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm transition"
+          onClick={() => alert('导出功能开发中')}
+        >
+          导出
+        </button>
+      </div>
     </div>
   );
 }
