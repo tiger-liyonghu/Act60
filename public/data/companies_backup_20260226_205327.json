@@ -1,0 +1,709 @@
+[
+  {
+    "name": "三井住友海上火灾保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://www.ms-ins.com.cn",
+    "intro": "三井住友海上火灾保险（中国）有限公司是一家在中国运营的保险公司，主营业务包括提供各类保险产品和服务，如财产保险、责任保险等。公司通过多种渠道开展业务，包括保险营销人员、代理机构、网站、小程序和微信公众号等。作为依法成立的保险公司，公司遵循金融保险监管要求，履行反洗钱、实名制管理等法定义务，并注重个人信息保护。公司业务建立在与客户信任的基础上，致力于提供优质客户服务和产品，同时通过增值服务如紧急救援等提升客户满意度。",
+    "fetched_url": "https://www.ms-ins.com.cn",
+    "type": "财产保险",
+    "headquarters": "上海",
+    "founded_year": 2001,
+    "registered_capital": "10.2亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "三星财产保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://www.samsunganycar.com/cn",
+    "intro": "三星财产保险（中国）有限公司是三星集团旗下的财产保险公司，专注于提供汽车保险、健康保险、意外保险、旅游保险和企业保险等产品。公司在中国市场运营，拥有车险报价、投保指南、商业险条款等服务，并涉及风险管理业务，包括风控团队和防灾防损知识。其网站提供电子保单和合规经营承诺书等资源，但具体成立时间、规模和资质信息未在给定内容中明确提及。",
+    "fetched_url": "https://www.samsunganycar.com/cn/gsjs/",
+    "type": "财产保险",
+    "headquarters": "上海",
+    "founded_year": 2005,
+    "registered_capital": "5.4亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "东京海上日动火灾保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://www.tokiomarine.com.cn",
+    "intro": "",
+    "fetched_url": "",
+    "type": "财产保险",
+    "headquarters": "上海",
+    "founded_year": 1994,
+    "registered_capital": "10亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "东海航运保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": "",
+    "type": "航运保险",
+    "headquarters": "上海",
+    "founded_year": 2015,
+    "registered_capital": "30亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中华联合保险集团股份有限公司",
+    "region": "CN",
+    "website": "https://www.cic.cn",
+    "intro": "",
+    "fetched_url": "",
+    "type": "财产保险",
+    "headquarters": "北京",
+    "founded_year": 1986,
+    "registered_capital": "153.1亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中原农业保险股份有限公司",
+    "region": "CN",
+    "website": "https://zyic.com",
+    "intro": "中原农业保险股份有限公司是河南省首家保险法人机构，属于“金融豫军”重要成员。公司总部设在郑州，注册资本为40亿元。其业务立足中原、面向全国，以促进农业保险发展为主要方向。",
+    "fetched_url": "https://zyic.com",
+    "type": "农业保险",
+    "headquarters": "郑州",
+    "founded_year": 2015,
+    "registered_capital": "21亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国人寿保险（集团）公司",
+    "region": "CN",
+    "website": "https://www.chinalife.com.cn",
+    "intro": "中国人寿保险（集团）公司是中国领先的综合性金融保险集团，业务涵盖保险、投资、银行等领域。作为国有大型金融保险企业，集团规模庞大，拥有广泛的客户基础和分支机构网络。其主营业务包括人寿保险、财产保险、养老保险、资产管理等，致力于提供全面的金融保险服务。集团在行业内具有重要地位，持有相关金融牌照和资质，持续推动高质量发展，服务国家战略和经济社会发展。",
+    "fetched_url": "https://www.chinalife.com.cn/gsjj/",
+    "type": "人寿保险",
+    "headquarters": "北京",
+    "founded_year": 1949,
+    "registered_capital": "282.65亿元",
+    "listed": true,
+    "stock_code": "601628.SH, 2628.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国人寿财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.chinalife-p.com.cn",
+    "intro": "中国人寿财产保险股份有限公司是中国人寿保险（集团）公司旗下的专业财产保险公司，成立于2006年，总部位于北京。公司主营业务涵盖个人保障（如意外、健康、财产保险）、家庭保障、车辆保障（包括交强险和商业险）以及企业保障（如高新技术企业、交通运输企业保险等），提供全面的财产保险产品和服务。作为CBA官方主赞助商，公司积极参与社会活动，并拥有广泛的机构网点网络。公司注重客户服务，提供在线理赔、增值服务等，致力于为个人和企业客户提供可靠的保险保障。",
+    "fetched_url": "https://www.chinalife-p.com.cn/gsjj",
+    "type": "财产保险",
+    "headquarters": "北京",
+    "founded_year": 2006,
+    "registered_capital": "188亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国人民保险集团股份有限公司",
+    "region": "CN",
+    "website": "https://www.picc.com.cn",
+    "intro": "",
+    "fetched_url": "",
+    "type": "综合保险",
+    "headquarters": "北京",
+    "founded_year": 1949,
+    "registered_capital": "442.24亿元",
+    "listed": true,
+    "stock_code": "601319.SH, 01339.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国人民财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://property.picc.com.cn",
+    "intro": "中国人民财产保险股份有限公司（PICC P&C）是中国人民保险集团旗下的核心成员，是中国领先的财产保险公司。公司主营业务包括车险、意外险、旅游险、家财险等各类财产保险服务，提供网上车险报价、投保等便捷服务。作为大型国有保险企业，公司具有全面的保险业务资质，通过官网、APP、微信等多渠道服务客户，并设有投资者关系、公开信息披露等板块，体现其规范运营。公司积极参与行业活动，如健康保险高质量发展座谈会，并开展风险减量服务、普惠金融等业务，致力于保险保障和高质量发展。",
+    "fetched_url": "https://property.picc.com.cn",
+    "type": "财产保险",
+    "headquarters": "北京",
+    "founded_year": 2003,
+    "registered_capital": "222.43亿元",
+    "listed": true,
+    "stock_code": "2328.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国再保险（集团）股份有限公司",
+    "region": "CN",
+    "website": "https://www.chinare.com.cn",
+    "intro": "",
+    "fetched_url": "",
+    "type": "再保险",
+    "headquarters": "北京",
+    "founded_year": 1949,
+    "registered_capital": "424.79亿元",
+    "listed": true,
+    "stock_code": "01508.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国出口信用保险公司",
+    "region": "CN",
+    "website": "https://www.sinosure.com.cn",
+    "intro": "中国出口信用保险公司是中国唯一的政策性出口信用保险机构，成立于2001年，由国家出资设立。公司主营业务包括中长期出口信用保险、海外投资保险、短期出口贸易险、国内贸易信用保险、担保及资信服务等，为出口企业提供风险保障和融资支持。作为政策性金融机构，公司支持中国对外经济贸易发展与合作，服务范围覆盖全球，在出口信用保险领域具有专业资质和重要地位。",
+    "fetched_url": "https://www.sinosure.com.cn",
+    "type": "信用保险",
+    "headquarters": "北京",
+    "founded_year": 2001,
+    "registered_capital": "300亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国大地财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.ccic-net.com.cn",
+    "intro": "中国大地财产保险股份有限公司（简称“中国大地保险”）于2003年10月15日在上海成立，是经国务院同意、中国保监会批准成立的全国性财产保险公司，为中国再保险（集团）股份有限公司旗下唯一的财险直保公司，注册资本金151.15918986亿元。公司聚焦保险主责主业，深化保障功能，服务科技保险、普惠保险、养老保险、巨灾保险等领域，积极服务国家战略。",
+    "fetched_url": "https://www.ccic-net.com.cn/gsjj/",
+    "type": "财产保险",
+    "headquarters": "上海",
+    "founded_year": 2003,
+    "registered_capital": "151.16亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国太平保险集团有限责任公司",
+    "region": "CN",
+    "website": "https://www.cntaiping.com",
+    "intro": "中国太平保险集团有限责任公司是中国太平保险集团的母公司，是一家综合性保险金融集团。集团业务涵盖人寿保险、财产保险、养老保险和资产管理等领域，通过旗下多家境内外成员公司运营，包括太平人寿、太平财产保险、太平养老保险和太平资产管理等。集团规模较大，拥有广泛的国内外服务网络，在保险行业具有重要地位，提供多元化的金融产品和服务。",
+    "fetched_url": "https://www.cntaiping.com",
+    "type": "综合保险",
+    "headquarters": "香港",
+    "founded_year": 1929,
+    "registered_capital": "252.61亿元",
+    "listed": true,
+    "stock_code": "00966.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国太平洋保险（集团）股份有限公司",
+    "region": "CN",
+    "website": "https://www.cpic.com.cn",
+    "intro": "中国太平洋保险（集团）股份有限公司（简称中国太保）是一家综合性保险集团，业务涵盖财产保险、人寿保险、资产管理、健康保险等领域。集团旗下包括中国太平洋财产保险股份有限公司、中国太平洋人寿保险股份有限公司、太平洋资产管理有限责任公司、太平洋健康保险股份有限公司等核心企业，以及长江养老保险股份有限公司、太平洋安信农业保险股份有限公司等子公司。公司提供医疗、重疾、意外、寿险、财富、财产等多种保险产品，并通过在线平台和移动应用提供服务。作为大型保险机构，中国太保在投资者关系、可持续发展（ESG）和信息公开方面有相应布局，致力于保险业务的多元化发展。",
+    "fetched_url": "https://www.cpic.com.cn/about",
+    "type": "综合保险",
+    "headquarters": "上海",
+    "founded_year": 1991,
+    "registered_capital": "96.2亿元",
+    "listed": true,
+    "stock_code": "601601.SH, 02601.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国太平洋财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.cpic.com.cn/xccbx",
+    "intro": "中国太平洋财产保险股份有限公司是中国太平洋保险（集团）股份有限公司旗下的专业财产保险公司，提供车险、财产保险等业务。公司通过官网销售多种保险产品，包括医疗、重疾、意外、寿险、财富和财产保险，并设有服务大厅提供保单查询、理赔、网点查询等服务。作为集团成员，公司致力于可持续发展（ESG）和信息公开，业务覆盖广泛，承保年龄范围从出生满30天至80周岁不等，产品如蓝医保系列和太保鸿福添年年金保险等，旨在满足客户多样化的保险需求。",
+    "fetched_url": "https://www.cpic.com.cn/xccbx/about",
+    "type": "财产保险",
+    "headquarters": "上海",
+    "founded_year": 2001,
+    "registered_capital": "194.7亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国平安保险（集团）股份有限公司",
+    "region": "CN",
+    "website": "http://www.pingan.cn",
+    "intro": "中国平安保险（集团）股份有限公司成立于1988年，总部位于深圳，是中国领先的综合金融服务集团。主营业务涵盖保险、银行、投资等金融领域，提供人寿保险、财产保险、银行、证券、信托、资产管理等多元化服务。集团规模庞大，在全球范围内拥有广泛的客户基础和业务网络，是中国保险行业的龙头企业之一。公司持有相关金融牌照，具备全面的金融业务资质，致力于通过科技创新推动金融发展，并积极履行社会责任，在可持续发展方面取得显著成就。",
+    "fetched_url": "http://www.pingan.cn",
+    "type": "综合金融",
+    "headquarters": "深圳",
+    "founded_year": 1988,
+    "registered_capital": "182.8亿元",
+    "listed": true,
+    "stock_code": "601318.SH, 02318.HK",
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国平安财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://property.pingan.com",
+    "intro": "中国平安财产保险股份有限公司是中国平安保险（集团）股份有限公司旗下的专业财产保险公司，成立于1992年。公司主营业务包括车险、意外险、财产险、健康险、少儿险等个人保险产品，以及企业财产、员工财产、信用保障、经营保障、风险防控等企业客户服务。作为大型保险公司，其规模较大，拥有广泛的业务网络和分支机构，并通过平安好车主APP等数字化平台提供便捷服务。公司具备相关保险业务资质，依法经营并公开披露信息。",
+    "fetched_url": "https://property.pingan.com/gsjj/",
+    "type": "财产保险",
+    "headquarters": "深圳",
+    "founded_year": 2002,
+    "registered_capital": "210亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中国铁路财产保险自保有限公司",
+    "region": "CN",
+    "website": "https://www.china-ric.cn",
+    "intro": "",
+    "fetched_url": "",
+    "type": "自保公司",
+    "headquarters": "北京",
+    "founded_year": 2015,
+    "registered_capital": "20亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中意财产保险有限公司",
+    "region": "CN",
+    "website": "https://www.generali.com.cn",
+    "intro": "中意财产保险有限公司是一家提供保险服务的公司，主营业务包括个人产品（如疾病、意外事故、财产损失保险）、企业产品（如公众责任、产品责任、雇主责任保险）和机动车辆保险，以客户为本，提供咨询、投保、理赔等全流程一站式服务。",
+    "fetched_url": "https://www.generali.com.cn/gsjj",
+    "type": "财产保险",
+    "headquarters": "北京",
+    "founded_year": 2007,
+    "registered_capital": "13亿元",
+    "listed": false,
+    "ai_verified": true,
+    "ai_verification_date": "2026-02-26"
+  },
+  {
+    "name": "中煤财产保险股份有限公司",
+    "region": "CN",
+    "website": "http://www.chinacoal-ins.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "中石油专属财产保险股份有限公司",
+    "region": "CN",
+    "website": "http://cnpcci.cnpc.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "中路财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.zhlic.com.cn",
+    "intro": "中路财产保险股份有限公司是第一家总部设在青岛的全国性法人保险机构，于2015年3月30日由中国保险监督管理委员会批准开业。公司主营产品包括机动车辆保险、家庭财产保险、企业财产保险、工程保险、责任险、货物运输保险、船舶保险、意外伤害保险和短期健康保险等。",
+    "fetched_url": "https://www.zhlic.com.cn/gsjj/"
+  },
+  {
+    "name": "中银保险有限公司",
+    "region": "CN",
+    "website": "https://www.bankofchina.com/bocins",
+    "intro": "中银保险有限公司是中国银行旗下的保险公司，成立于2005年，总部位于北京。公司主营业务包括财产保险、责任保险、信用保险、保证保险等各类保险业务，服务于个人和企业客户。作为中国银行集团的重要组成部分，中银保险依托集团资源，在全国设有分支机构，业务规模持续扩大。公司多次获得标准普尔“A-”信用评级，并获风险综合评级AAA最高等级，展现了稳健的财务实力和风险管理能力。中银保险积极参与金融消费者权益保护教育宣传活动，致力于提供专业、可靠的保险服务。",
+    "fetched_url": "https://www.bankofchina.com/bocins/aboutus"
+  },
+  {
+    "name": "久隆财产保险有限公司",
+    "region": "CN",
+    "website": "https://www.lpcic.com.cn",
+    "intro": "久隆财产保险有限公司是一家专注于装备制造业的财产保险公司，主营业务包括工程机械保险、工程机械延保及装备制造行业相关的各类保险。公司聚焦于服务高端装备产业链，致力于通过保险产品支持实体经济发展，例如与三一集团等制造企业合作，探索“保险+智造”模式。公司提供保单查询、保单验真、自助报案等保险服务，并设有信息公开、人才招聘等板块。具体成立时间、规模、资质等信息未在页面中明确提及。",
+    "fetched_url": "https://www.lpcic.com.cn/gsjj.html"
+  },
+  {
+    "name": "亚太财产保险有限公司",
+    "region": "CN",
+    "website": "https://icidp.iachina.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "京东安联财产保险有限公司",
+    "region": "CN",
+    "website": "https://www.jdallianz.com",
+    "intro": "京东安联财产保险有限公司成立于2018年，由京东集团与德国安联集团共同打造，是京东集团旗下的自营保险品牌。公司主营业务包括电商互联网保险、意外健康保险、汽车保险和财产险等，为个人和企业客户提供保险服务。截至2023年12月，公司年服务用户数达2.52亿人，累计保额为27.1万亿元，累计赔付案件数为2848.3万件。公司致力于成为最值得信赖的保险服务供应商，并持有相关保险业务资质。",
+    "fetched_url": "https://www.jdallianz.com/gsjj/"
+  },
+  {
+    "name": "众安在线财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.zhongan.com",
+    "intro": "众安在线财产保险股份有限公司（简称众安保险）是中国首家互联网保险公司，成立于2013年。公司主营业务包括个人及家庭保险（如保险商城、保单服务）和企业产品及解决方案（如保险场景定制、行业解决方案）。作为一家持牌保险公司，众安保险通过数字化平台提供保险服务，并设有投资者关系、公开披露信息等合规板块。公司注重可持续发展，拥有管理团队和企业文化体系，业务覆盖生活服务、医疗健康、宠物消费等多个领域。",
+    "fetched_url": "https://www.zhongan.com"
+  },
+  {
+    "name": "凯本财产保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://kbfgins.com.cn",
+    "intro": "凯本财产保险（中国）有限公司是首家总部设立于江苏省的外商独资保险公司，由韩国四大保险公司之一的株式会社KB财产保险100%控股。公司于2009年10月正式开业，主营财产损失保险、责任保险、信用保险等财产保险业务。其使命是改变世界的金融、带给客户幸福、创造更美好的世界，愿景是通过顶尖人才和大胆革新成为最可信的终生希望伙伴，业务哲学为努力成就未来、用心服务客户。",
+    "fetched_url": "https://kbfgins.com.cn"
+  },
+  {
+    "name": "利宝保险有限公司",
+    "region": "CN",
+    "website": "http://www.libertymutual.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "劳合社保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://www.lloyds.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "北部湾财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.bgic.com",
+    "intro": "北部湾财产保险股份有限公司是一家财产保险公司，提供车险、非车险等保险服务，并设有客户服务、理赔、反欺诈等业务。公司拥有服务网点，并开展金融知识普及活动。其党建品牌“北部湾红帆”曾入选优秀案例，创新应用也获得行业认可。公司网站支持IPv6，并持有相关备案和许可证。",
+    "fetched_url": "https://www.bgic.com"
+  },
+  {
+    "name": "华农财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.chinahuanong.com.cn",
+    "intro": "华农财产保险股份有限公司是一家全国性综合类财产保险公司，成立于2006年1月，总部设在广东，注册资本金10亿元。公司主营业务为财产保险，在全国设有11家省级分公司，覆盖北京、江苏、四川、浙江、河北、河南、广西、山西、甘肃、广东、云南等地。",
+    "fetched_url": "https://www.chinahuanong.com.cn"
+  },
+  {
+    "name": "华安财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.sinosafe.com.cn",
+    "intro": "华安财产保险股份有限公司是一家提供多种保险服务的公司，主营业务包括车险、财产险、人身险、责任险、信用保证险、农业险及相应再保险。公司通过在线商城提供车辆保险、家庭财产保险、居民燃气综合保险、个人资金账户险等产品，并设有客服热线95556和车险投保热线10100111。公司还提供年检计算器、自助报案查勘、保单查询、理赔查询等贴心服务，并关注反洗钱、防范非法集资、消费者权益保护、普惠金融等社会责任领域。",
+    "fetched_url": "https://www.sinosafe.com.cn"
+  },
+  {
+    "name": "华泰保险集团股份有限公司",
+    "region": "CN",
+    "website": "https://www.ehuatai.com",
+    "intro": "华泰保险集团是一家集财险、寿险、资产管理、基金管理于一体的综合性金融保险集团。其主营业务涵盖财产保险、人寿保险、资产管理及基金管理等领域，致力于提供专业的风险保障和财富管理服务。公司以“以客户为中心，成为一家出色的、提供优质专业风险保障和财富管理的金融保险集团”为愿景，强调专业创造价值、稳健成就未来的经营理念。",
+    "fetched_url": "https://www.ehuatai.com"
+  },
+  {
+    "name": "华泰财产保险有限公司",
+    "region": "CN",
+    "website": "https://pc.ehuatai.com/index.html",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "华海财产保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "史带财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.starrchina.cn",
+    "intro": "史带财产保险股份有限公司是史带集团在中国的成员公司，提供全球保险与投资服务。公司业务覆盖意外及健康保险、汽车保险、一般商业意外保险、施工保险、危机管理、能源保险、金融行业保险、一般意外保险、海洋保险、职业责任保险、财产保险、特种产品等多个领域。公司拥有经验丰富的团队，帮助客户管理跨越各行各业的风险，服务范围从东海岸到远东。公司在中国设有官方网站，支持中文服务，并设有信息披露、保险介绍、消费者权益保护、新闻等栏目。",
+    "fetched_url": "https://www.starrchina.cn"
+  },
+  {
+    "name": "合众财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.union-ins.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "国任财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.guorenpcic.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "国元农业保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "国泰财产保险有限责任公司",
+    "region": "CN",
+    "website": "https://www.cathay-ins.com.cn",
+    "intro": "国泰财产保险有限责任公司（简称国泰产险）是一家财产保险公司，提供个人保险和商家保险等业务。公司围绕“客户第一、科技引领、稳健经营”发展方针，构建消费者权益保护长效机制，通过宣传、服务、维权三大抓手强化消费预警机制、完善投诉处理机制，保障可持续健康发展。公司拥有分支机构，如聊城中心支公司和安丘支公司，并持有相关经营资质。",
+    "fetched_url": "https://www.cathay-ins.com.cn"
+  },
+  {
+    "name": "大家保险集团有限责任公司",
+    "region": "CN",
+    "website": "https://www.djbx.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "天安财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.tianan-insurance.com",
+    "intro": "天安财产保险股份有限公司成立于1994年，是一家财产保险公司，主营业务包括财产保险及相关服务。公司持有ICP许可证（沪ICP备06021817号-1）和公安部备案号（31011502010058），具备合法经营资质。其网站支持IPv6，并公开披露企业信息，如公司架构和年度报告。公司注重企业社会责任，开展公益活动，并遵守中国银行保险监督管理委员会和保险行业协会的监管要求。",
+    "fetched_url": "https://www.tianan-insurance.com/gsjj.html"
+  },
+  {
+    "name": "太平洋安信农业保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.aaic.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "安华农业保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.ahic.com.cn",
+    "intro": "安华农业保险股份有限公司是一家专注于农业保险业务的公司，成立于1998年，总部位于吉林。公司主营业务包括农业保险产品和服务，覆盖种植业、养殖业等领域，致力于为农业提供风险保障。作为一家持牌保险公司，安华农险具备相关保险资质，在行业内具有一定规模，运营至2011年，拥有官方网站和客户热线95540。",
+    "fetched_url": "https://www.ahic.com.cn/gyrb/jjjj/"
+  },
+  {
+    "name": "安心财产保险有限责任公司",
+    "region": "CN",
+    "website": "https://www.95303.com",
+    "intro": "安心财产保险有限责任公司是一家互联网保险公司，专注于提供简单的保险产品，如互联网车险，支持手机投保和便捷理赔。公司总部位于江苏省苏州市相城区高铁新城南天成路55号相融大厦13F南半层1306室，拥有官方客服电话95303。作为持牌保险公司，其业务通过线上平台开展，强调数字化服务体验，包括微信公众号和抖音等社交媒体渠道。公司持有ICP备案号苏ICP备2024098321号，并遵守相关监管要求进行公开信息披露。",
+    "fetched_url": "https://www.95303.com/gsjj/"
+  },
+  {
+    "name": "安盛天平财产保险有限公司",
+    "region": "CN",
+    "website": "https://www.axa.cn",
+    "intro": "安盛天平财产保险有限公司是安盛集团成员，专注于提供优质财产保险产品与服务，为中国客户提供车险、财产险、健康险等多重保障。公司主营业务包括汽车保险、意外保险、旅游保险、健康保险、企业保险等，通过线上平台如保险超市销售，强调省时、省心、省力的投保体验。页面内容未明确提及成立时间、具体规模或资质信息。",
+    "fetched_url": "https://www.axa.cn"
+  },
+  {
+    "name": "安盟财产保险有限公司",
+    "region": "CN",
+    "website": "https://www.groupama-sdig.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "安联（中国）保险控股有限公司",
+    "region": "CN",
+    "website": "https://www.allianzholding.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "安诚财产保险股份有限公司",
+    "region": "CN",
+    "website": "http://www.e-acic.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "安达保险有限公司",
+    "region": "CN",
+    "website": "https://www.chubb.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "富德保险控股股份有限公司",
+    "region": "CN",
+    "website": "https://www.funde-ins.com",
+    "intro": "富德保险控股股份有限公司是一家保险控股公司，旗下拥有富德生命人寿、富德产险、生命资产、富德资产（香港）和富德销售等子公司，业务涵盖人寿保险、财产保险、资产管理等领域。公司秉持“富及民众，德行天下”的理念，致力于稳健与高质量发展，聚焦投资研究、产品创新、客户服务、风险管理等核心能力建设，在科技金融、绿色金融、普惠金融、养老金融、数字金融方面积极作为，服务国家重大发展战略、支持实体经济、促进民生建设。公司通过富德云彩平台等渠道开展业务，并注重风控合规，设有反洗钱和合规专栏。",
+    "fetched_url": "https://www.funde-ins.com"
+  },
+  {
+    "name": "富德财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.fundins.com",
+    "intro": "富德财产保险股份有限公司（简称富德产险）是一家财产保险公司，主营业务包括财产保险及相关服务。公司提供理赔服务、投保指南等客户服务，并设有合规反洗钱、公开信息披露等板块。从新闻动态可见，公司积极参与金融教育宣传、客户联络中心评奖等活动，并恢复互联网财产保险新业务。具体成立时间、规模、资质等详细信息未在提供内容中明确提及。",
+    "fetched_url": "https://www.fundins.com/about"
+  },
+  {
+    "name": "恒邦财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.hbins.com.cn",
+    "intro": "恒邦财产保险股份有限公司成立于2014年12月30日，总部位于南昌市，是江西省目前唯一一家全国性法人保险公司，注册资本2,362,981,850元。公司股东实力雄厚，主要股东包括江西金控集团、中铁资本、赣粤高速、江西铜业等知名企业。恒邦保险秉持“深耕江西、布局全国、唱响品牌”三步走发展战略，坚持“理性经营、稳中求进”总基调，已设立江西、安徽、江苏、河北、四川、山西、河南、贵州等8家分公司和105家三、四级机构，拥有1个全国性保险代理牌照即全资子公司华夏恒邦保险代理有限公司，初步构建了“东西南北中”全国性销售服务网络布局。公司专注主业，坚持创新发展，全力服务实体经济，致力于成为一家资本充足、管理规范、内控严密、服务和效益良好的现代保险企业。",
+    "fetched_url": "https://www.hbins.com.cn/gsjj/"
+  },
+  {
+    "name": "日本兴亚财产保险（中国）有限责任公司",
+    "region": "CN",
+    "website": "https://www.nipponkoa-cn.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "日本财产保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://www.sompo-cn.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "永安财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.yaic.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "永诚财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.alltrust.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "泰山财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.taishanpic.com.cn",
+    "intro": "泰山财产保险股份有限公司（简称泰山保险）是一家财产保险公司，以“专业、创新、担当、共赢”为核心价值观。公司致力于通过“四优化”（业务结构、制度流程、组织架构、渠道建设）和“四提升”（发展质效、客户服务、工作作风、专业能力）来增强核心竞争力。其主营业务包括各类财产保险服务，并提供客户服务、保单激活、下载、验真及理赔查询等线上服务。公司注重提升服务水平以扩大市场份额，并曾荣获“优秀保险科技金融服务机构”等荣誉。",
+    "fetched_url": "https://www.taishanpic.com.cn"
+  },
+  {
+    "name": "泰康保险集团股份有限公司",
+    "region": "CN",
+    "website": "https://www.taikang.com",
+    "intro": "泰康保险集团股份有限公司是一家综合性保险金融服务集团，主营业务包括保险、资产管理、养老社区等，致力于为中产人群及其家庭打造长寿健康财富的服务平台，构建全生命周期的大健康产业生态体系。集团管理资产规模超过45000亿元，受托管理的第三方资产总规模超26000亿元，养老金管理规模超11000亿元。公司提供24小时服务热线95522、代理人一对一服务、新生活广场门店、微信实时服务、电话私人医生和重大疾病就医绿色通道等服务。",
+    "fetched_url": "https://www.taikang.com/jjjj/"
+  },
+  {
+    "name": "泰康在线财产保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "浙商财产保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "渤海财产保险股份有限公司",
+    "region": "CN",
+    "website": "http://www.bpic.com.cn",
+    "intro": "渤海财产保险股份有限公司是一家财产保险公司，提供多种保险产品，包括家庭财产保险、旅行意外保险、健康医疗保险、电动车骑行意外险和交通工具乘客意外险等。公司强调快速理赔和安心服务，并参与消费者教育宣传和反洗钱等活动。",
+    "fetched_url": "http://www.bpic.com.cn"
+  },
+  {
+    "name": "燕赵财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.4000000123.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "现代财产保险（中国）有限公司",
+    "region": "CN",
+    "website": "http://www.hi-ins.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "瑞再企商保险有限公司",
+    "region": "CN",
+    "website": "https://www.swissrecorporatesolutions.com.cn",
+    "intro": "瑞再企商保险有限公司是瑞士再保险集团在中国全资拥有的财产保险公司，总部位于上海，在北京和江苏设有分公司。公司专注于为企业提供全方位风险管理服务，依托集团160余年的风险管理经验和财务实力，结合中国市场特色，开发了包括定制化解决方案和指数型保险等创新风险转移方案在内的风险管理解决方案，并为企业在全球的商业活动提供风险保障。公司保持健康充足的偿付能力水平。",
+    "fetched_url": "https://www.swissrecorporatesolutions.com.cn/aboutus/"
+  },
+  {
+    "name": "紫金财产保险股份有限公司",
+    "region": "CN",
+    "website": "http://www.zking.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "美亚财产保险有限公司",
+    "region": "CN",
+    "website": "https://www.aig.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "苏黎世财产保险（中国）有限公司",
+    "region": "CN",
+    "website": "https://www.zurich.com.cn",
+    "intro": "苏黎世财产保险（中国）有限公司是苏黎世保险集团在中国的子公司，提供企业与商业保险服务，包括金融保险、责任保险、财产及工程保险、风险工程以及全球综合保险解决方案。公司位于中国（上海）自由贸易试验区，地址为世纪大道100号上海环球金融中心32楼T12，拥有客服热线400-615-5156。作为国际保险集团的一部分，公司在中国市场运营，专注于可持续发展，并提供理赔服务、产品查询等快捷服务，持有沪ICP备16036540号-2和沪公网安备31011502006633号资质。",
+    "fetched_url": "https://www.zurich.com.cn/about"
+  },
+  {
+    "name": "英大泰和财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.eydpic.com",
+    "intro": "英大泰和财产保险股份有限公司是一家财产保险公司，提供企业保险、车险、非车险理赔服务等保险产品。公司拥有公开信息披露专栏和消保专栏，并设有职工专区和活动专区。其业务包括保险资讯和在线客服支持，致力于为客户提供全面的保险解决方案。",
+    "fetched_url": "https://www.eydpic.com/about"
+  },
+  {
+    "name": "诚泰财产保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "都邦财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.dbic.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "鑫安汽车保险股份有限公司",
+    "region": "CN",
+    "website": "",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "锦泰财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.ejintai.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "长江财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.cjbx.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "阳光保险集团股份有限公司",
+    "region": "CN",
+    "website": "https://www.sinosig.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "阳光农业相互保险公司",
+    "region": "CN",
+    "website": "https://www.samic.com.cn",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "阳光财产保险股份有限公司",
+    "region": "CN",
+    "website": "https://www.4000-000-000.com",
+    "intro": "",
+    "fetched_url": ""
+  },
+  {
+    "name": "鼎和财产保险股份有限公司",
+    "region": "CN",
+    "website": "http://www.edhic.com",
+    "intro": "",
+    "fetched_url": ""
+  }
+]

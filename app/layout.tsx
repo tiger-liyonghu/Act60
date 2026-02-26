@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "保险高管关系图谱",
+  title: "保险行业高管关系图谱",
   description: "中国保险行业高管人物关系可视化",
 };
 

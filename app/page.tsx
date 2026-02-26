@@ -10,7 +10,7 @@ export default function HomePage() {
     }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '48px', fontWeight: 'bold', marginBottom: '20px' }}>
-          保险公司高管信息图谱
+          保险行业高管关系图谱
         </h1>
         
         <p style={{ fontSize: '20px', opacity: 0.8, marginBottom: '40px' }}>
@@ -60,9 +60,7 @@ export default function HomePage() {
             fontWeight: '600',
             cursor: 'pointer',
             transition: 'all 0.2s'
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.background = '#2563eb')}
-          onMouseOut={(e) => (e.currentTarget.style.background = '#3b82f6')}>
+          }}>
             立即体验图谱
           </button>
         </div>
